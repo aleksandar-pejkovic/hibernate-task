@@ -1,7 +1,5 @@
 package org.example.facade;
 
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.model.Trainee;
@@ -10,8 +8,11 @@ import org.example.model.Training;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;
 import org.example.service.TrainingService;
+import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class GymFacade {
@@ -21,12 +22,17 @@ public class GymFacade {
     private final TraineeService traineeService;
     private final TrainerService trainerService;
     private final TrainingService trainingService;
+    private final UserService userService;
 
     @Autowired
-    public GymFacade(TraineeService traineeService, TrainerService trainerService, TrainingService trainingService) {
+    public GymFacade(TraineeService traineeService,
+                     TrainerService trainerService,
+                     TrainingService trainingService,
+                     UserService userService) {
         this.traineeService = traineeService;
         this.trainerService = trainerService;
         this.trainingService = trainingService;
+        this.userService = userService;
     }
 
     public void readTrainees() {
@@ -44,9 +50,9 @@ public class GymFacade {
         List<Training> trainings = trainingService.getAllTrainings();
     }
 
-    public Trainee createTrainee(Trainee trainee) {
+    public void createTrainee(Trainee trainee) {
         logger.info("Creating trainee...");
-        return traineeService.createTrainee(trainee);
+        traineeService.createTrainee(trainee);
     }
 
     public Trainee getTraineeById(Long traineeId) {
@@ -59,9 +65,9 @@ public class GymFacade {
         return traineeService.updateTrainee(trainee);
     }
 
-    public void deleteTrainee(Long traineeId) {
-        logger.info("Deleting trainee with ID: {}", traineeId);
-        traineeService.deleteTrainee(traineeId);
+    public void deleteTrainee(Trainee trainee) {
+        logger.info("Deleting trainee with ID: {}", trainee.getId());
+        traineeService.deleteTrainee(trainee);
     }
 
     public void createTrainer(Trainer trainer) {
@@ -79,9 +85,9 @@ public class GymFacade {
         trainerService.updateTrainer(trainer);
     }
 
-    public void deleteTrainer(Long trainerId) {
-        logger.info("Deleting trainer with ID: {}", trainerId);
-        trainerService.deleteTrainer(trainerId);
+    public void deleteTrainer(Trainer trainer) {
+        logger.info("Deleting trainer with ID: {}", trainer.getId());
+        trainerService.deleteTrainer(trainer);
     }
 
     public void createTraining(Training training) {
@@ -99,8 +105,8 @@ public class GymFacade {
         trainingService.updateTraining(training);
     }
 
-    public void deleteTraining(Long trainingId) {
-        logger.info("Deleting training with ID: {}", trainingId);
-        trainingService.deleteTraining(trainingId);
+    public void deleteTraining(Training training) {
+        logger.info("Deleting training with ID: {}", training.getId());
+        trainingService.deleteTraining(training);
     }
 }

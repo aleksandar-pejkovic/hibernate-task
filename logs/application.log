@@ -153,3 +153,15 @@ Caused by: java.lang.ClassNotFoundException: org.h2.Driver
 10:47:36.323 [main] INFO  org.example.service.TrainerService - Retrieved all Trainers: [Trainer(id=1, specialization=1, userId=1), Trainer(id=2, specialization=2, userId=2)]
 10:47:36.323 [main] INFO  org.example.facade.GymFacade - Reading trainings...
 10:47:36.323 [main] INFO  org.example.service.TrainingService - Retrieved all Trainings: [Training(id=1, traineeId=1, trainerId=1, trainingName=Training1, trainingTypeId=1, trainingDate=Thu Nov 23 10:47:34 CET 2023, trainingDuration=60), Training(id=2, traineeId=2, trainerId=2, trainingName=Training2, trainingTypeId=2, trainingDate=Thu Nov 23 10:47:34 CET 2023, trainingDuration=45)]
+11:51:45.550 [main] INFO  org.example.service.TraineeService - Retrieved all Trainees: [Trainee(id=1, dateOfBirth=Thu Nov 23 11:51:45 CET 2023, address=123 Main St, userId=1)]
+11:51:45.652 [main] INFO  org.example.service.TraineeService - Trainee created: Trainee(id=1, dateOfBirth=Thu Nov 23 11:51:45 CET 2023, address=123 Main St, userId=1)
+11:51:45.667 [main] INFO  org.example.service.TraineeService - Retrieved Trainee by ID 1: Trainee(id=null, dateOfBirth=null, address=null, userId=null)
+11:51:45.678 [main] INFO  org.example.service.TraineeService - Trainee updated: Trainee(id=1, dateOfBirth=Thu Nov 23 11:51:45 CET 2023, address=123 Main St, userId=1)
+11:51:45.791 [main] INFO  org.example.service.TrainerService - Retrieved all Trainers: [Trainer(id=null, specialization=null, userId=null)]
+11:51:45.801 [main] INFO  org.example.service.TrainerService - Trainer created: Trainer(id=null, specialization=null, userId=null)
+11:51:45.808 [main] INFO  org.example.service.TrainerService - Retrieved Trainer by ID 1: Trainer(id=null, specialization=null, userId=null)
+11:51:45.816 [main] INFO  org.example.service.TrainerService - Trainer updated: Trainer(id=null, specialization=null, userId=null)
+11:51:45.864 [main] INFO  org.example.service.TrainingService - Training created: Training(id=null, traineeId=null, trainerId=null, trainingName=null, trainingTypeId=null, trainingDate=null, trainingDuration=0)
+11:51:45.872 [main] INFO  org.example.service.TrainingService - Retrieved Training by ID 1: Training(id=null, traineeId=null, trainerId=null, trainingName=null, trainingTypeId=null, trainingDate=null, trainingDuration=0)
+11:51:45.889 [main] INFO  org.example.service.TrainingService - Retrieved all Trainings: [Training(id=null, traineeId=null, trainerId=null, trainingName=null, trainingTypeId=null, trainingDate=null, trainingDuration=0)]
+11:51:45.896 [main] INFO  org.example.service.TrainingService - Training updated: Training(id=null, traineeId=null, trainerId=null, trainingName=null, trainingTypeId=null, trainingDate=null, trainingDuration=0)

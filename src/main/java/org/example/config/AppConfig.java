@@ -1,14 +1,13 @@
 package org.example.config;
 
-import org.example.dao.TraineeDAO;
-import org.example.dao.TrainerDAO;
-import org.example.dao.TrainingDAO;
+import org.example.dao.*;
 import org.example.facade.GymFacade;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;
 import org.example.service.TrainingService;
+import org.example.service.UserService;
 import org.example.storage.Data;
-import org.example.storage.FileStorage;
+import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,18 +22,28 @@ public class AppConfig {
     }
 
     @Bean
-    public TraineeDAO traineeDAO(FileStorage fileStorage) {
-        return new TraineeDAO(fileStorage);
+    public TraineeDAO traineeDAO(SessionFactory sessionFactory) {
+        return new TraineeDAO(sessionFactory);
     }
 
     @Bean
-    public TrainerDAO trainerDAO(FileStorage fileStorage) {
-        return new TrainerDAO(fileStorage);
+    public TrainerDAO trainerDAO(SessionFactory sessionFactory) {
+        return new TrainerDAO(sessionFactory);
     }
 
     @Bean
-    public TrainingDAO trainingDAO(FileStorage fileStorage) {
-        return new TrainingDAO(fileStorage);
+    public TrainingDAO trainingDAO(SessionFactory sessionFactory) {
+        return new TrainingDAO(sessionFactory);
+    }
+
+    @Bean
+    public UserDAO userDAO(SessionFactory sessionFactory) {
+        return new UserDAO(sessionFactory);
+    }
+
+    @Bean
+    public TrainingTypeDAO trainingTypeDAO(SessionFactory sessionFactory) {
+        return new TrainingTypeDAO(sessionFactory);
     }
 
     @Bean
@@ -53,11 +62,17 @@ public class AppConfig {
     }
 
     @Bean
+    public UserService userService(UserDAO userDAO) {
+        return new UserService(userDAO);
+    }
+
+    @Bean
     public GymFacade gymFacade(
             TraineeService traineeService,
             TrainerService trainerService,
-            TrainingService trainingService
+            TrainingService trainingService,
+            UserService userService
     ) {
-        return new GymFacade(traineeService, trainerService, trainingService);
+        return new GymFacade(traineeService, trainerService, trainingService, userService);
     }
 }

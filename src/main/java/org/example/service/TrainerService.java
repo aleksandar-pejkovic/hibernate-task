@@ -1,13 +1,13 @@
 package org.example.service;
 
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.dao.TrainerDAO;
 import org.example.model.Trainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TrainerService {
@@ -37,9 +37,9 @@ public class TrainerService {
         logger.info("Trainer updated: {}", trainer);
     }
 
-    public void deleteTrainer(long id) {
-        trainerDAO.delete(id);
-        logger.info("Trainer deleted with ID: {}", id);
+    public void deleteTrainer(Trainer trainer) {
+        trainerDAO.delete(trainer);
+        logger.info("Trainer deleted with ID: {}", trainer.getId());
     }
 
     public List<Trainer> getAllTrainers() {

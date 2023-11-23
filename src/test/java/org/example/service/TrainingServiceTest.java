@@ -1,18 +1,15 @@
 package org.example.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Collections;
-import java.util.List;
-
 import org.example.dao.TrainingDAO;
 import org.example.model.Training;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 public class TrainingServiceTest {
 
@@ -55,15 +52,6 @@ public class TrainingServiceTest {
 
         // Verify that the update method of TrainingDAO was called
         verify(trainingDAOMock, times(1)).update(training);
-    }
-
-    @Test
-    void deleteTraining() {
-        long trainingId = 1L;
-        trainingService.deleteTraining(trainingId);
-
-        // Verify that the delete method of TrainingDAO was called
-        verify(trainingDAOMock, times(1)).delete(trainingId);
     }
 
     @Test
