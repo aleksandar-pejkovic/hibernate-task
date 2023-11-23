@@ -6,7 +6,6 @@ import org.example.service.TraineeService;
 import org.example.service.TrainerService;
 import org.example.service.TrainingService;
 import org.example.service.UserService;
-import org.example.storage.Data;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,11 +14,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackages = "org.example")
 public class AppConfig {
-
-    @Bean
-    public Data data() {
-        return new Data();
-    }
 
     @Bean
     public TraineeDAO traineeDAO(SessionFactory sessionFactory) {
