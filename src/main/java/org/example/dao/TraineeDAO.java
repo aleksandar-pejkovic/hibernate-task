@@ -31,7 +31,7 @@ public class TraineeDAO {
             session.persist(trainee);
         } catch (Exception e) {
             logger.error("Error while saving trainee", e);
-            throw e; // Propagate the exception to trigger a rollback
+            throw e;
         }
     }
 
