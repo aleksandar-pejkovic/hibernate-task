@@ -8,7 +8,6 @@ import org.example.model.Training;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;
 import org.example.service.TrainingService;
-import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,17 +21,14 @@ public class GymFacade {
     private final TraineeService traineeService;
     private final TrainerService trainerService;
     private final TrainingService trainingService;
-    private final UserService userService;
 
     @Autowired
     public GymFacade(TraineeService traineeService,
                      TrainerService trainerService,
-                     TrainingService trainingService,
-                     UserService userService) {
+                     TrainingService trainingService) {
         this.traineeService = traineeService;
         this.trainerService = trainerService;
         this.trainingService = trainingService;
-        this.userService = userService;
     }
 
     public void readTrainees() {

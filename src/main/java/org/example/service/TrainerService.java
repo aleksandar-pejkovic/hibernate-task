@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.dao.TrainerDAO;
 import org.example.model.Trainer;
+import org.example.utils.CredentialsGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +17,23 @@ public class TrainerService {
 
     private final TrainerDAO trainerDAO;
 
+    private CredentialsGenerator generator;
+
     @Autowired
     public TrainerService(TrainerDAO trainerDAO) {
         this.trainerDAO = trainerDAO;
     }
 
+    @Autowired
+    public void setGenerator(CredentialsGenerator credentialsGenerator) {
+        this.generator = credentialsGenerator;
+    }
+
     public void createTrainer(Trainer trainer) {
+        String username = generator.generateUsername(trainer.getUser());
+        String password = generator.generateRandomPassword();
+        trainer.getUser().setUsername(username);
+        trainer.getUser().setPassword(password);
         trainerDAO.save(trainer);
         logger.info("Trainer created: {}", trainer);
     }

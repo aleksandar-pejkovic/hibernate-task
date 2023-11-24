@@ -5,7 +5,7 @@ import org.example.facade.GymFacade;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;
 import org.example.service.TrainingService;
-import org.example.service.UserService;
+import org.example.utils.CredentialsGenerator;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -56,17 +56,16 @@ public class AppConfig {
     }
 
     @Bean
-    public UserService userService(UserDAO userDAO) {
-        return new UserService(userDAO);
+    public CredentialsGenerator credentialsGenerator(SessionFactory sessionFactory) {
+        return new CredentialsGenerator(sessionFactory);
     }
 
     @Bean
     public GymFacade gymFacade(
             TraineeService traineeService,
             TrainerService trainerService,
-            TrainingService trainingService,
-            UserService userService
+            TrainingService trainingService
     ) {
-        return new GymFacade(traineeService, trainerService, trainingService, userService);
+        return new GymFacade(traineeService, trainerService, trainingService);
     }
 }
