@@ -6,6 +6,7 @@ import org.example.service.TraineeService;
 import org.example.service.TrainerService;
 import org.example.service.TrainingService;
 import org.example.utils.CredentialsGenerator;
+import org.example.utils.UserAuthentication;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -58,6 +59,11 @@ public class AppConfig {
     @Bean
     public CredentialsGenerator credentialsGenerator(SessionFactory sessionFactory) {
         return new CredentialsGenerator(sessionFactory);
+    }
+
+    @Bean
+    public UserAuthentication userAuthentication(SessionFactory sessionFactory) {
+        return new UserAuthentication(sessionFactory);
     }
 
     @Bean

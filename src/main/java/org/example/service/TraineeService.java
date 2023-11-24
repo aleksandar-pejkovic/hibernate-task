@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.example.dao.TraineeDAO;
 import org.example.model.Trainee;
 import org.example.utils.CredentialsGenerator;
+import org.example.utils.UserAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ public class TraineeService {
 
     private CredentialsGenerator generator;
 
+    private UserAuthentication authentication;
+
     @Autowired
     public TraineeService(TraineeDAO traineeDAO) {
         this.traineeDAO = traineeDAO;
@@ -27,6 +30,11 @@ public class TraineeService {
     @Autowired
     public void setGenerator(CredentialsGenerator credentialsGenerator) {
         this.generator = credentialsGenerator;
+    }
+
+    @Autowired
+    public void setAuthentication(UserAuthentication authentication) {
+        this.authentication = authentication;
     }
 
     public void createTrainee(Trainee trainee) {
@@ -45,12 +53,14 @@ public class TraineeService {
     }
 
     public Trainee updateTrainee(Trainee trainee) {
+        authentication.authenticateUser(trainee.getUser());
         Trainee updatedTrainee = traineeDAO.update(trainee);
         logger.info("Trainee updated: {}", trainee);
         return updatedTrainee;
     }
 
     public void deleteTrainee(Trainee trainee) {
+        authentication.authenticateUser(trainee.getUser());
         traineeDAO.delete(trainee);
         logger.info("Trainee deleted with ID: {}", trainee.getId());
     }
