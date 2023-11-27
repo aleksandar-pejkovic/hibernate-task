@@ -52,14 +52,23 @@ public class TrainerService {
         return trainer;
     }
 
+    public Trainer changePassword(String username, String oldPassword, String newPassword) {
+        authentication.authenticateUser(username, oldPassword);
+        Trainer trainer = getTrainerByUsername(username);
+        trainer.setPassword(newPassword);
+        Trainer updatedTrainer = trainerDAO.update(trainer);
+        logger.info("Password updated for trainer: {}", trainer);
+        return updatedTrainer;
+    }
+
     public void updateTrainer(Trainer trainer) {
-        authentication.authenticateUser(trainer.getUser());
+        authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
         trainerDAO.update(trainer);
         logger.info("Trainer updated: {}", trainer);
     }
 
     public void deleteTrainer(Trainer trainer) {
-        authentication.authenticateUser(trainer.getUser());
+        authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
         trainerDAO.delete(trainer);
         logger.info("Trainer deleted with ID: {}", trainer.getId());
     }

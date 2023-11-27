@@ -26,56 +26,30 @@ public class TraineeDAO {
     }
 
     public void save(Trainee trainee) {
-        try {
-            Session session = sessionFactory.getCurrentSession();
-            session.persist(trainee);
-        } catch (Exception e) {
-            logger.error("Error while saving trainee", e);
-            throw e;
-        }
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(trainee);
     }
 
     public Trainee findByUsername(String username) {
-        try {
-            Session session = sessionFactory.getCurrentSession();
-            Query<Trainee> query = session.createQuery("FROM Trainee t where t.user.username = :username",
-                    Trainee.class);
-            query.setParameter("username", username);
-            return query.getSingleResult();
-        } catch (Exception e) {
-            logger.error("Error while finding trainee by USERNAME: " + username, e);
-            throw e;
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Query<Trainee> query = session.createQuery("FROM Trainee t where t.user.username = :username", Trainee.class);
+        query.setParameter("username", username);
+        return query.getSingleResult();
     }
 
     public Trainee update(Trainee trainee) {
-        try {
-            Session session = sessionFactory.getCurrentSession();
-            return (Trainee) session.merge(trainee);
-        } catch (Exception e) {
-            logger.error("Error while updating trainee", e);
-            throw e;
-        }
+        Session session = sessionFactory.getCurrentSession();
+        return (Trainee) session.merge(trainee);
     }
 
     public void delete(Trainee trainee) {
-        try {
-            Session session = sessionFactory.getCurrentSession();
-            session.remove(trainee);
-        } catch (Exception e) {
-            logger.error("Error while deleting trainee", e);
-            throw e;
-        }
+        Session session = sessionFactory.getCurrentSession();
+        session.remove(trainee);
     }
 
     public List<Trainee> getAllTrainees() {
-        try {
-            Session session = sessionFactory.getCurrentSession();
-            Query<Trainee> query = session.createQuery("FROM Trainee", Trainee.class);
-            return query.list();
-        } catch (Exception e) {
-            logger.error("Error while finding all trainees", e);
-            throw e;
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Query<Trainee> query = session.createQuery("FROM Trainee", Trainee.class);
+        return query.list();
     }
 }

@@ -33,4 +33,16 @@ public class Trainer {
 
     @OneToMany(mappedBy = "trainee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Training> trainingList = new ArrayList<>();
+
+    public String getUsername() {
+        return this.getUser().getUsername();
+    }
+
+    public String getPassword() {
+        return this.getUser().getPassword();
+    }
+
+    public void setPassword(String password) {
+        this.getUser().setPassword(password);
+    }
 }

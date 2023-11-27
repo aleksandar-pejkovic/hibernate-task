@@ -3,7 +3,6 @@ package org.example.utils;
 import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.example.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -22,8 +21,8 @@ public class UserAuthentication {
         this.sessionFactory = sessionFactory;
     }
 
-    public void authenticateUser(User user) {
-        if (!authenticate(user)) {
+    public void authenticateUser(String username, String password) {
+        if (!authenticate(username, password)) {
             throw new RuntimeException("Authentication failed");
         } else {
             logger.info("Successful user authentication");
@@ -31,13 +30,13 @@ public class UserAuthentication {
     }
 
     @Transactional
-    private Boolean authenticate(User user) {
+    private Boolean authenticate(String username, String password) {
         try {
             Session session = sessionFactory.getCurrentSession();
             Query<Long> query = session.createQuery(
                     "SELECT COUNT(*) FROM User WHERE username = :username AND password = :password", Long.class);
-            query.setParameter("username", user.getUsername());
-            query.setParameter("password", user.getPassword());
+            query.setParameter("username", username);
+            query.setParameter("password", password);
 
             return query.uniqueResult() > 0;
         } catch (Exception e) {

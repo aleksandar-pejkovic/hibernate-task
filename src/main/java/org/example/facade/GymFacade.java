@@ -56,6 +56,16 @@ public class GymFacade {
         return traineeService.getTraineeByUsername(username);
     }
 
+    public Trainee changeTraineePassword(String username, String oldPassword, String newPassword) {
+        logger.info("Changing password...");
+        return traineeService.changePassword(username, oldPassword, newPassword);
+    }
+
+    public Trainer changeTrainerPassword(String username, String oldPassword, String newPassword) {
+        logger.info("Changing password...");
+        return trainerService.changePassword(username, oldPassword, newPassword);
+    }
+
     public Trainee updateTrainee(Trainee trainee) {
         logger.info("Updating trainee...");
         return traineeService.updateTrainee(trainee);

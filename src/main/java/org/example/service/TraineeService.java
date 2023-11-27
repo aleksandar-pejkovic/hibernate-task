@@ -52,15 +52,24 @@ public class TraineeService {
         return trainee;
     }
 
+    public Trainee changePassword(String username, String oldPassword, String newPassword) {
+        authentication.authenticateUser(username, oldPassword);
+        Trainee trainee = getTraineeByUsername(username);
+        trainee.setPassword(newPassword);
+        Trainee updatedTrainee = traineeDAO.update(trainee);
+        logger.info("Password updated for trainee: {}", trainee);
+        return updatedTrainee;
+    }
+
     public Trainee updateTrainee(Trainee trainee) {
-        authentication.authenticateUser(trainee.getUser());
+        authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
         Trainee updatedTrainee = traineeDAO.update(trainee);
         logger.info("Trainee updated: {}", trainee);
         return updatedTrainee;
     }
 
     public void deleteTrainee(Trainee trainee) {
-        authentication.authenticateUser(trainee.getUser());
+        authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
         traineeDAO.delete(trainee);
         logger.info("Trainee deleted with ID: {}", trainee.getId());
     }

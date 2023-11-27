@@ -1,11 +1,11 @@
 package org.example.dao;
 
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.model.Trainer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
+@Transactional
 public class TrainerDAO {
 
     private static final Logger logger = LogManager.getLogger(TrainerDAO.class);
@@ -25,95 +26,34 @@ public class TrainerDAO {
     }
 
     public void save(Trainer trainer) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = null;
-
-        try {
-            transaction = session.beginTransaction();
-            session.persist(trainer);
-            transaction.commit();
-            logger.info("Trainer saved successfully. ID: {}", trainer.getId());
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            logger.error("Error while saving trainer", e);
-        } finally {
-            session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(trainer);
+        logger.info("Trainer saved successfully. ID: {}", trainer.getId());
     }
 
     public Trainer findByUsername(String username) {
-        try {
-            Session session = sessionFactory.getCurrentSession();
-            Query<Trainer> query = session.createQuery("FROM Trainer t where t.user.username = :username",
-                    Trainer.class);
-            query.setParameter("username", username);
-            return query.getSingleResult();
-        } catch (Exception e) {
-            logger.error("Error while finding trainer by USERNAME: " + username, e);
-            throw e;
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Query<Trainer> query = session.createQuery("FROM Trainer t where t.user.username = :username", Trainer.class);
+        query.setParameter("username", username);
+        return query.getSingleResult();
     }
 
-    public void update(Trainer trainer) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = null;
-
-        try {
-            transaction = session.beginTransaction();
-            Trainer updatedTrainer = (Trainer) session.merge(trainer);
-            transaction.commit();
-            logger.info("Trainer updated successfully. ID: {}", updatedTrainer.getId());
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            logger.error("Error while updating trainer", e);
-        } finally {
-            session.close();
-        }
+    public Trainer update(Trainer trainer) {
+        Session session = sessionFactory.getCurrentSession();
+        return (Trainer) session.merge(trainer);
     }
 
     public void delete(Trainer trainer) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = null;
-
-        try {
-            transaction = session.beginTransaction();
-            session.remove(trainer);
-            transaction.commit();
-            logger.info("Trainer deleted successfully. ID: {}", trainer.getId());
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            logger.error("Error while deleting trainer", e);
-        } finally {
-            session.close();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        session.remove(trainer);
+        logger.info("Trainer deleted successfully. ID: {}", trainer.getId());
     }
 
     public List<Trainer> getAllTrainers() {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = null;
-        List<Trainer> trainerList = null;
-
-        try {
-            transaction = session.beginTransaction();
-            Query<Trainer> query = session.createQuery("FROM Trainer", Trainer.class);
-            trainerList = query.list();
-            transaction.commit();
-            logger.info("Retrieved all trainers. Count: {}", trainerList.size());
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            logger.error("Error while finding all trainers", e);
-        } finally {
-            session.close();
-        }
-
+        Session session = sessionFactory.getCurrentSession();
+        Query<Trainer> query = session.createQuery("FROM Trainer", Trainer.class);
+        List<Trainer> trainerList = query.list();
+        logger.info("Retrieved all trainers. Count: {}", trainerList.size());
         return trainerList;
     }
 }
