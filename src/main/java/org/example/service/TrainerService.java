@@ -67,6 +67,22 @@ public class TrainerService {
         logger.info("Trainer updated: {}", trainer);
     }
 
+    public Trainer activateTrainer(Trainer trainer) {
+        authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
+        trainer.activateAccount();
+        Trainer updatedTrainer = trainerDAO.update(trainer);
+        logger.info("Activated account for trainer: {}", trainer);
+        return updatedTrainer;
+    }
+
+    public Trainer deactivateTrainer(Trainer trainer) {
+        authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
+        trainer.deactivateAccount();
+        Trainer updatedTrainer = trainerDAO.update(trainer);
+        logger.info("Deactivated account for trainer: {}", trainer);
+        return updatedTrainer;
+    }
+
     public void deleteTrainer(Trainer trainer) {
         authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
         trainerDAO.delete(trainer);

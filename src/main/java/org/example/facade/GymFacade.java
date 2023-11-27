@@ -31,19 +31,11 @@ public class GymFacade {
         this.trainingService = trainingService;
     }
 
+    // Trainee-related methods
+
     public void readTrainees() {
         logger.info("Reading trainees...");
         List<Trainee> trainees = traineeService.getAllTrainees();
-    }
-
-    public void readTrainers() {
-        logger.info("Reading trainers...");
-        List<Trainer> trainers = trainerService.getAllTrainers();
-    }
-
-    public void readTrainings() {
-        logger.info("Reading trainings...");
-        List<Training> trainings = trainingService.getAllTrainings();
     }
 
     public void createTrainee(Trainee trainee) {
@@ -57,13 +49,8 @@ public class GymFacade {
     }
 
     public Trainee changeTraineePassword(String username, String oldPassword, String newPassword) {
-        logger.info("Changing password...");
+        logger.info("Changing trainee password...");
         return traineeService.changePassword(username, oldPassword, newPassword);
-    }
-
-    public Trainer changeTrainerPassword(String username, String oldPassword, String newPassword) {
-        logger.info("Changing password...");
-        return trainerService.changePassword(username, oldPassword, newPassword);
     }
 
     public Trainee updateTrainee(Trainee trainee) {
@@ -71,9 +58,26 @@ public class GymFacade {
         return traineeService.updateTrainee(trainee);
     }
 
+    public Trainee activateTrainee(Trainee trainee) {
+        logger.info("Activating trainee...");
+        return traineeService.activateTrainee(trainee);
+    }
+
+    public Trainee deactivateTrainee(Trainee trainee) {
+        logger.info("Deactivating trainee...");
+        return traineeService.deactivateTrainee(trainee);
+    }
+
     public void deleteTrainee(Trainee trainee) {
         logger.info("Deleting trainee with ID: {}", trainee.getId());
         traineeService.deleteTrainee(trainee);
+    }
+
+    // Trainer-related methods
+
+    public void readTrainers() {
+        logger.info("Reading trainers...");
+        List<Trainer> trainers = trainerService.getAllTrainers();
     }
 
     public void createTrainer(Trainer trainer) {
@@ -86,14 +90,36 @@ public class GymFacade {
         return trainerService.getTrainerByUsername(username);
     }
 
+    public Trainer changeTrainerPassword(String username, String oldPassword, String newPassword) {
+        logger.info("Changing trainer password...");
+        return trainerService.changePassword(username, oldPassword, newPassword);
+    }
+
     public void updateTrainer(Trainer trainer) {
         logger.info("Updating trainer...");
         trainerService.updateTrainer(trainer);
     }
 
+    public Trainer activateTrainer(Trainer trainer) {
+        logger.info("Activating trainer...");
+        return trainerService.activateTrainer(trainer);
+    }
+
+    public Trainer deactivateTrainer(Trainer trainer) {
+        logger.info("Deactivating trainer...");
+        return trainerService.deactivateTrainer(trainer);
+    }
+
     public void deleteTrainer(Trainer trainer) {
         logger.info("Deleting trainer with ID: {}", trainer.getId());
         trainerService.deleteTrainer(trainer);
+    }
+
+    // Training-related methods
+
+    public void readTrainings() {
+        logger.info("Reading trainings...");
+        List<Training> trainings = trainingService.getAllTrainings();
     }
 
     public void createTraining(Training training) {

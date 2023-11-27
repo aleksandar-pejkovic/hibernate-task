@@ -18,8 +18,6 @@ public class Trainer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Boolean isActive;
-
     @ManyToOne
     @JoinColumn(name = "training_type_id")
     private TrainingType specialization;
@@ -44,5 +42,13 @@ public class Trainer {
 
     public void setPassword(String password) {
         this.getUser().setPassword(password);
+    }
+
+    public void activateAccount() {
+        this.getUser().setActive(true);
+    }
+
+    public void deactivateAccount() {
+        this.getUser().setActive(false);
     }
 }

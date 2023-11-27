@@ -68,6 +68,22 @@ public class TraineeService {
         return updatedTrainee;
     }
 
+    public Trainee activateTrainee(Trainee trainee) {
+        authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
+        trainee.activateAccount();
+        Trainee updatedTrainee = traineeDAO.update(trainee);
+        logger.info("Activated account for trainee: {}", trainee);
+        return updatedTrainee;
+    }
+
+    public Trainee deactivateTrainee(Trainee trainee) {
+        authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
+        trainee.deactivateAccount();
+        Trainee updatedTrainee = traineeDAO.update(trainee);
+        logger.info("Deactivated account for trainee: {}", trainee);
+        return updatedTrainee;
+    }
+
     public void deleteTrainee(Trainee trainee) {
         authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
         traineeDAO.delete(trainee);

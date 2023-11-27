@@ -23,8 +23,6 @@ public class Trainee {
 
     private String address;
 
-    private Boolean isActive;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
@@ -50,5 +48,13 @@ public class Trainee {
 
     public void setPassword(String password) {
         this.getUser().setPassword(password);
+    }
+
+    public void activateAccount() {
+        this.getUser().setActive(true);
+    }
+
+    public void deactivateAccount() {
+        this.getUser().setActive(false);
     }
 }
