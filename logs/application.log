@@ -634,3 +634,23 @@ Caused by: org.hibernate.query.sqm.UnknownEntityException: Could not resolve roo
 	at org.hibernate.internal.AbstractSharedSessionContract.interpretHql(AbstractSharedSessionContract.java:741) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
 	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:786) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
 	... 20 more
+19:29:10.153 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+19:29:10.156 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+19:29:10.537 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+19:29:10.799 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+19:29:10.880 [main] INFO  org.example.facade.GymFacade - Reading trainees...
+19:33:08.099 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+19:33:08.103 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+19:33:08.481 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+19:33:08.740 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+19:33:08.819 [main] INFO  org.example.facade.GymFacade - Reading trainees...
+19:34:00.519 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+19:34:00.523 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+19:34:00.883 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+19:34:01.161 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+19:34:01.241 [main] INFO  org.example.facade.GymFacade - Reading trainees...
+21:44:47.426 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+21:44:47.430 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+21:44:47.849 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+21:44:48.141 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+21:44:48.224 [main] INFO  org.example.facade.GymFacade - Reading trainees...
