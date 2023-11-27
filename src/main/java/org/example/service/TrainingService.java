@@ -32,9 +32,10 @@ public class TrainingService {
         return training;
     }
 
-    public void updateTraining(Training training) {
-        trainingDAO.update(training);
+    public Training updateTraining(Training training) {
+        Training updatedTraining = trainingDAO.update(training);
         logger.info("Training updated: {}", training);
+        return updatedTraining;
     }
 
     public void deleteTraining(Training training) {

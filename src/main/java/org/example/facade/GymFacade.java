@@ -106,9 +106,9 @@ public class GymFacade {
         return trainingService.getTrainingById(trainingId);
     }
 
-    public void updateTraining(Training training) {
+    public Training updateTraining(Training training) {
         logger.info("Updating training...");
-        trainingService.updateTraining(training);
+        return trainingService.updateTraining(training);
     }
 
     public void deleteTraining(Training training) {

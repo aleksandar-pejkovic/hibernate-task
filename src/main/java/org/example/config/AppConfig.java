@@ -1,6 +1,8 @@
 package org.example.config;
 
-import org.example.dao.*;
+import org.example.dao.TraineeDAO;
+import org.example.dao.TrainerDAO;
+import org.example.dao.TrainingDAO;
 import org.example.facade.GymFacade;
 import org.example.service.TraineeService;
 import org.example.service.TrainerService;
@@ -29,16 +31,6 @@ public class AppConfig {
     @Bean
     public TrainingDAO trainingDAO(SessionFactory sessionFactory) {
         return new TrainingDAO(sessionFactory);
-    }
-
-    @Bean
-    public UserDAO userDAO(SessionFactory sessionFactory) {
-        return new UserDAO(sessionFactory);
-    }
-
-    @Bean
-    public TrainingTypeDAO trainingTypeDAO(SessionFactory sessionFactory) {
-        return new TrainingTypeDAO(sessionFactory);
     }
 
     @Bean
