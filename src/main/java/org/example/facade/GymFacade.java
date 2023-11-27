@@ -51,9 +51,9 @@ public class GymFacade {
         traineeService.createTrainee(trainee);
     }
 
-    public Trainee getTraineeById(Long traineeId) {
-        logger.info("Getting trainee by ID: {}", traineeId);
-        return traineeService.getTraineeById(traineeId);
+    public Trainee getTraineeByUsername(String username) {
+        logger.info("Getting trainee by USERNAME: {}", username);
+        return traineeService.getTraineeByUsername(username);
     }
 
     public Trainee updateTrainee(Trainee trainee) {
@@ -71,9 +71,9 @@ public class GymFacade {
         trainerService.createTrainer(trainer);
     }
 
-    public Trainer getTrainerById(Long trainerId) {
-        logger.info("Getting trainer by ID: {}", trainerId);
-        return trainerService.getTrainerById(trainerId);
+    public Trainer getTrainerUsername(String username) {
+        logger.info("Getting trainer by Username: {}", username);
+        return trainerService.getTrainerByUsername(username);
     }
 
     public void updateTrainer(Trainer trainer) {

@@ -165,3 +165,472 @@ Caused by: java.lang.ClassNotFoundException: org.h2.Driver
 11:51:45.872 [main] INFO  org.example.service.TrainingService - Retrieved Training by ID 1: Training(id=null, traineeId=null, trainerId=null, trainingName=null, trainingTypeId=null, trainingDate=null, trainingDuration=0)
 11:51:45.889 [main] INFO  org.example.service.TrainingService - Retrieved all Trainings: [Training(id=null, traineeId=null, trainerId=null, trainingName=null, trainingTypeId=null, trainingDate=null, trainingDuration=0)]
 11:51:45.896 [main] INFO  org.example.service.TrainingService - Training updated: Training(id=null, traineeId=null, trainerId=null, trainingName=null, trainingTypeId=null, trainingDate=null, trainingDuration=0)
+11:52:51.973 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+11:52:51.982 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+11:52:52.694 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+11:52:53.102 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+11:52:53.211 [main] INFO  org.example.facade.GymFacade - Reading trainees...
+11:52:53.428 [main] ERROR org.example.dao.TraineeDAO - Error while finding all trainees
+java.lang.IllegalArgumentException: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainee'
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:138) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:162) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:168) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:795) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:120) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.example.dao.TraineeDAO.getAllTrainees(TraineeDAO.java:71) [classes/:?]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:391) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:703) [spring-aop-6.0.13.jar:6.0.13]
+	at org.example.dao.TraineeDAO$$SpringCGLIB$$0.getAllTrainees(<generated>) [classes/:?]
+	at org.example.service.TraineeService.getAllTrainees(TraineeService.java:69) [classes/:?]
+	at org.example.facade.GymFacade.readTrainees(GymFacade.java:36) [classes/:?]
+	at org.example.App.main(App.java:12) [classes/:?]
+Caused by: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainee'
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:1960) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$RootEntityContext.accept(HqlParser.java:2473) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitEntityWithJoins(SemanticQueryBuilder.java:1874) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitFromClause(SemanticQueryBuilder.java:1865) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuery(SemanticQueryBuilder.java:1141) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:937) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$QuerySpecExpressionContext.accept(HqlParser.java:1818) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:931) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$SimpleQueryGroupContext.accept(HqlParser.java:1711) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSelectStatement(SemanticQueryBuilder.java:418) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitStatement(SemanticQueryBuilder.java:377) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.buildSemanticModel(SemanticQueryBuilder.java:295) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.StandardHqlTranslator.translate(StandardHqlTranslator.java:81) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.createHqlInterpretation(QueryInterpretationCacheStandardImpl.java:165) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.resolveHqlInterpretation(QueryInterpretationCacheStandardImpl.java:147) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.interpretHql(AbstractSharedSessionContract.java:741) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:786) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	... 20 more
+11:54:34.406 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+11:54:34.416 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+11:54:35.327 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+11:54:35.746 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+11:54:35.896 [main] INFO  org.example.facade.GymFacade - Reading trainers...
+11:54:36.210 [main] ERROR org.example.dao.TrainerDAO - Error while finding all trainers
+java.lang.IllegalArgumentException: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainer'
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:138) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:162) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:168) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:795) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:120) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.example.dao.TrainerDAO.getAllTrainers(TrainerDAO.java:117) [classes/:?]
+	at org.example.service.TrainerService.getAllTrainers(TrainerService.java:68) [classes/:?]
+	at org.example.facade.GymFacade.readTrainers(GymFacade.java:41) [classes/:?]
+	at org.example.App.main(App.java:13) [classes/:?]
+Caused by: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainer'
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:1960) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$RootEntityContext.accept(HqlParser.java:2473) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitEntityWithJoins(SemanticQueryBuilder.java:1874) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitFromClause(SemanticQueryBuilder.java:1865) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuery(SemanticQueryBuilder.java:1141) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:937) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$QuerySpecExpressionContext.accept(HqlParser.java:1818) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:931) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$SimpleQueryGroupContext.accept(HqlParser.java:1711) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSelectStatement(SemanticQueryBuilder.java:418) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitStatement(SemanticQueryBuilder.java:377) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.buildSemanticModel(SemanticQueryBuilder.java:295) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.StandardHqlTranslator.translate(StandardHqlTranslator.java:81) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.createHqlInterpretation(QueryInterpretationCacheStandardImpl.java:165) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.resolveHqlInterpretation(QueryInterpretationCacheStandardImpl.java:147) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.interpretHql(AbstractSharedSessionContract.java:741) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:786) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	... 5 more
+11:54:36.228 [main] INFO  org.example.service.TrainerService - Retrieved all Trainers: null
+11:54:36.229 [main] INFO  org.example.facade.GymFacade - Reading trainings...
+11:54:36.231 [main] ERROR org.example.dao.TrainingDAO - Error while finding all trainings
+java.lang.IllegalArgumentException: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Training'
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:138) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:162) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:168) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:795) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:120) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.example.dao.TrainingDAO.getAllTrainings(TrainingDAO.java:117) [classes/:?]
+	at org.example.service.TrainingService.getAllTrainings(TrainingService.java:46) [classes/:?]
+	at org.example.facade.GymFacade.readTrainings(GymFacade.java:46) [classes/:?]
+	at org.example.App.main(App.java:14) [classes/:?]
+Caused by: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Training'
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:1960) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$RootEntityContext.accept(HqlParser.java:2473) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitEntityWithJoins(SemanticQueryBuilder.java:1874) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitFromClause(SemanticQueryBuilder.java:1865) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuery(SemanticQueryBuilder.java:1141) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:937) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$QuerySpecExpressionContext.accept(HqlParser.java:1818) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:931) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$SimpleQueryGroupContext.accept(HqlParser.java:1711) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSelectStatement(SemanticQueryBuilder.java:418) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitStatement(SemanticQueryBuilder.java:377) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.buildSemanticModel(SemanticQueryBuilder.java:295) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.StandardHqlTranslator.translate(StandardHqlTranslator.java:81) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.createHqlInterpretation(QueryInterpretationCacheStandardImpl.java:165) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.resolveHqlInterpretation(QueryInterpretationCacheStandardImpl.java:147) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.interpretHql(AbstractSharedSessionContract.java:741) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:786) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	... 5 more
+11:54:36.233 [main] INFO  org.example.service.TrainingService - Retrieved all Trainings: null
+11:56:03.600 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+11:56:03.608 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+11:56:04.464 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+11:56:04.956 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+11:56:05.176 [main] INFO  org.example.facade.GymFacade - Reading trainees...
+11:56:05.432 [main] ERROR org.example.dao.TraineeDAO - Error while finding all trainees
+java.lang.IllegalArgumentException: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainee'
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:138) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:162) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:168) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:795) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:120) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.example.dao.TraineeDAO.getAllTrainees(TraineeDAO.java:71) [classes/:?]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:391) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:703) [spring-aop-6.0.13.jar:6.0.13]
+	at org.example.dao.TraineeDAO$$SpringCGLIB$$0.getAllTrainees(<generated>) [classes/:?]
+	at org.example.service.TraineeService.getAllTrainees(TraineeService.java:69) [classes/:?]
+	at org.example.facade.GymFacade.readTrainees(GymFacade.java:36) [classes/:?]
+	at org.example.App.main(App.java:12) [classes/:?]
+Caused by: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainee'
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:1960) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$RootEntityContext.accept(HqlParser.java:2473) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitEntityWithJoins(SemanticQueryBuilder.java:1874) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitFromClause(SemanticQueryBuilder.java:1865) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuery(SemanticQueryBuilder.java:1141) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:937) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$QuerySpecExpressionContext.accept(HqlParser.java:1818) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:931) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$SimpleQueryGroupContext.accept(HqlParser.java:1711) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSelectStatement(SemanticQueryBuilder.java:418) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitStatement(SemanticQueryBuilder.java:377) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.buildSemanticModel(SemanticQueryBuilder.java:295) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.StandardHqlTranslator.translate(StandardHqlTranslator.java:81) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.createHqlInterpretation(QueryInterpretationCacheStandardImpl.java:165) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.resolveHqlInterpretation(QueryInterpretationCacheStandardImpl.java:147) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.interpretHql(AbstractSharedSessionContract.java:741) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:786) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	... 20 more
+11:59:12.087 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+11:59:12.094 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+11:59:12.902 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+11:59:13.393 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+11:59:13.543 [main] INFO  org.example.facade.GymFacade - Reading trainees...
+11:59:13.751 [main] ERROR org.example.dao.TraineeDAO - Error while finding all trainees
+java.lang.IllegalArgumentException: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainee'
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:138) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:162) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:168) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:795) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:120) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.example.dao.TraineeDAO.getAllTrainees(TraineeDAO.java:71) [classes/:?]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:391) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:703) [spring-aop-6.0.13.jar:6.0.13]
+	at org.example.dao.TraineeDAO$$SpringCGLIB$$0.getAllTrainees(<generated>) [classes/:?]
+	at org.example.service.TraineeService.getAllTrainees(TraineeService.java:69) [classes/:?]
+	at org.example.facade.GymFacade.readTrainees(GymFacade.java:36) [classes/:?]
+	at org.example.App.main(App.java:12) [classes/:?]
+Caused by: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainee'
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:1960) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$RootEntityContext.accept(HqlParser.java:2473) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitEntityWithJoins(SemanticQueryBuilder.java:1874) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitFromClause(SemanticQueryBuilder.java:1865) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuery(SemanticQueryBuilder.java:1141) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:937) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$QuerySpecExpressionContext.accept(HqlParser.java:1818) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:931) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$SimpleQueryGroupContext.accept(HqlParser.java:1711) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSelectStatement(SemanticQueryBuilder.java:418) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitStatement(SemanticQueryBuilder.java:377) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.buildSemanticModel(SemanticQueryBuilder.java:295) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.StandardHqlTranslator.translate(StandardHqlTranslator.java:81) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.createHqlInterpretation(QueryInterpretationCacheStandardImpl.java:165) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.resolveHqlInterpretation(QueryInterpretationCacheStandardImpl.java:147) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.interpretHql(AbstractSharedSessionContract.java:741) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:786) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	... 20 more
+12:40:46.562 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+12:40:46.570 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+12:40:47.559 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+12:40:47.994 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+12:40:48.126 [main] INFO  org.example.facade.GymFacade - Reading trainees...
+12:40:48.335 [main] ERROR org.example.dao.TraineeDAO - Error while finding all trainees
+java.lang.IllegalArgumentException: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainee'
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:138) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:162) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:168) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:795) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:120) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.example.dao.TraineeDAO.getAllTrainees(TraineeDAO.java:71) [classes/:?]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:391) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:703) [spring-aop-6.0.13.jar:6.0.13]
+	at org.example.dao.TraineeDAO$$SpringCGLIB$$0.getAllTrainees(<generated>) [classes/:?]
+	at org.example.service.TraineeService.getAllTrainees(TraineeService.java:69) [classes/:?]
+	at org.example.facade.GymFacade.readTrainees(GymFacade.java:36) [classes/:?]
+	at org.example.App.main(App.java:12) [classes/:?]
+Caused by: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainee'
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:1960) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$RootEntityContext.accept(HqlParser.java:2473) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitEntityWithJoins(SemanticQueryBuilder.java:1874) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitFromClause(SemanticQueryBuilder.java:1865) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuery(SemanticQueryBuilder.java:1141) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:937) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$QuerySpecExpressionContext.accept(HqlParser.java:1818) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:931) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$SimpleQueryGroupContext.accept(HqlParser.java:1711) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSelectStatement(SemanticQueryBuilder.java:418) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitStatement(SemanticQueryBuilder.java:377) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.buildSemanticModel(SemanticQueryBuilder.java:295) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.StandardHqlTranslator.translate(StandardHqlTranslator.java:81) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.createHqlInterpretation(QueryInterpretationCacheStandardImpl.java:165) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.resolveHqlInterpretation(QueryInterpretationCacheStandardImpl.java:147) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.interpretHql(AbstractSharedSessionContract.java:741) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:786) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	... 20 more
+12:43:33.515 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+12:43:33.523 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+12:43:34.442 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+12:43:34.883 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+12:43:35.012 [main] INFO  org.example.facade.GymFacade - Reading trainees...
+12:43:35.334 [main] ERROR org.example.dao.TraineeDAO - Error while finding all trainees
+java.lang.IllegalArgumentException: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainee'
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:138) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:162) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:168) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:795) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:120) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.example.dao.TraineeDAO.getAllTrainees(TraineeDAO.java:71) [classes/:?]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:391) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:703) [spring-aop-6.0.13.jar:6.0.13]
+	at org.example.dao.TraineeDAO$$SpringCGLIB$$0.getAllTrainees(<generated>) [classes/:?]
+	at org.example.service.TraineeService.getAllTrainees(TraineeService.java:69) [classes/:?]
+	at org.example.facade.GymFacade.readTrainees(GymFacade.java:36) [classes/:?]
+	at org.example.App.main(App.java:12) [classes/:?]
+Caused by: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainee'
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:1960) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$RootEntityContext.accept(HqlParser.java:2473) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitEntityWithJoins(SemanticQueryBuilder.java:1874) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitFromClause(SemanticQueryBuilder.java:1865) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuery(SemanticQueryBuilder.java:1141) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:937) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$QuerySpecExpressionContext.accept(HqlParser.java:1818) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:931) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$SimpleQueryGroupContext.accept(HqlParser.java:1711) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSelectStatement(SemanticQueryBuilder.java:418) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitStatement(SemanticQueryBuilder.java:377) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.buildSemanticModel(SemanticQueryBuilder.java:295) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.StandardHqlTranslator.translate(StandardHqlTranslator.java:81) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.createHqlInterpretation(QueryInterpretationCacheStandardImpl.java:165) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.resolveHqlInterpretation(QueryInterpretationCacheStandardImpl.java:147) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.interpretHql(AbstractSharedSessionContract.java:741) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:786) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	... 20 more
+12:45:00.626 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+12:45:00.635 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+12:45:01.871 [main] WARN  org.springframework.context.annotation.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'traineeDAO' defined in org.example.config.AppConfig: Unsatisfied dependency expressed through method 'traineeDAO' parameter 0: Error creating bean with name 'sessionFactory' defined in class path resource [org/example/config/HibernateConfig.class]: Cannot invoke "org.hibernate.mapping.ToOne.getReferencedEntityName()" because "toOne" is null
+12:45:25.672 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+12:45:25.679 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+12:45:26.789 [main] WARN  org.springframework.context.annotation.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'traineeDAO' defined in org.example.config.AppConfig: Unsatisfied dependency expressed through method 'traineeDAO' parameter 0: Error creating bean with name 'sessionFactory' defined in class path resource [org/example/config/HibernateConfig.class]: Cannot invoke "org.hibernate.mapping.ToOne.getReferencedEntityName()" because "toOne" is null
+12:45:33.723 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+12:45:33.730 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+12:45:34.761 [main] WARN  org.springframework.context.annotation.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'traineeDAO' defined in org.example.config.AppConfig: Unsatisfied dependency expressed through method 'traineeDAO' parameter 0: Error creating bean with name 'sessionFactory' defined in class path resource [org/example/config/HibernateConfig.class]: Cannot invoke "org.hibernate.mapping.ToOne.getReferencedEntityName()" because "toOne" is null
+12:45:55.265 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+12:45:55.271 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+12:46:01.575 [main] WARN  org.springframework.context.annotation.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'traineeDAO' defined in org.example.config.AppConfig: Unsatisfied dependency expressed through method 'traineeDAO' parameter 0: Error creating bean with name 'sessionFactory' defined in class path resource [org/example/config/HibernateConfig.class]: 'void org.springframework.orm.hibernate5.LocalSessionFactoryBuilder.addAttributeConverter(java.lang.Class)'
+12:50:10.273 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+12:50:10.284 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+12:50:11.445 [main] WARN  org.springframework.context.annotation.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'traineeDAO' defined in org.example.config.AppConfig: Unsatisfied dependency expressed through method 'traineeDAO' parameter 0: Error creating bean with name 'sessionFactory' defined in class path resource [org/example/config/HibernateConfig.class]: Cannot invoke "org.hibernate.mapping.ToOne.getReferencedEntityName()" because "toOne" is null
+12:50:23.936 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+12:50:23.944 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+12:50:24.800 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+12:50:25.214 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+12:50:25.346 [main] INFO  org.example.facade.GymFacade - Reading trainees...
+12:50:25.554 [main] ERROR org.example.dao.TraineeDAO - Error while finding all trainees
+java.lang.IllegalArgumentException: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainee'
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:138) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:162) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:168) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:795) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:120) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.example.dao.TraineeDAO.getAllTrainees(TraineeDAO.java:71) [classes/:?]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:391) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:703) [spring-aop-6.0.13.jar:6.0.13]
+	at org.example.dao.TraineeDAO$$SpringCGLIB$$0.getAllTrainees(<generated>) [classes/:?]
+	at org.example.service.TraineeService.getAllTrainees(TraineeService.java:69) [classes/:?]
+	at org.example.facade.GymFacade.readTrainees(GymFacade.java:36) [classes/:?]
+	at org.example.App.main(App.java:12) [classes/:?]
+Caused by: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainee'
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:1960) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$RootEntityContext.accept(HqlParser.java:2473) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitEntityWithJoins(SemanticQueryBuilder.java:1874) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitFromClause(SemanticQueryBuilder.java:1865) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuery(SemanticQueryBuilder.java:1141) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:937) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$QuerySpecExpressionContext.accept(HqlParser.java:1818) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:931) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$SimpleQueryGroupContext.accept(HqlParser.java:1711) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSelectStatement(SemanticQueryBuilder.java:418) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitStatement(SemanticQueryBuilder.java:377) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.buildSemanticModel(SemanticQueryBuilder.java:295) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.StandardHqlTranslator.translate(StandardHqlTranslator.java:81) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.createHqlInterpretation(QueryInterpretationCacheStandardImpl.java:165) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.resolveHqlInterpretation(QueryInterpretationCacheStandardImpl.java:147) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.interpretHql(AbstractSharedSessionContract.java:741) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:786) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	... 20 more
+12:54:24.217 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+12:54:24.226 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+12:54:25.346 [main] WARN  org.springframework.context.annotation.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'traineeDAO' defined in org.example.config.AppConfig: Unsatisfied dependency expressed through method 'traineeDAO' parameter 0: Error creating bean with name 'sessionFactory' defined in class path resource [org/example/config/HibernateConfig.class]: Cannot invoke "org.hibernate.mapping.ToOne.getReferencedEntityName()" because "toOne" is null
+12:54:49.129 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+12:54:49.138 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+12:54:50.139 [main] WARN  org.springframework.context.annotation.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'traineeDAO' defined in org.example.config.AppConfig: Unsatisfied dependency expressed through method 'traineeDAO' parameter 0: Error creating bean with name 'sessionFactory' defined in class path resource [org/example/config/HibernateConfig.class]: Cannot invoke "org.hibernate.mapping.ToOne.getReferencedEntityName()" because "toOne" is null
+12:55:08.632 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+12:55:08.641 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+12:55:09.773 [main] WARN  org.springframework.context.annotation.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'traineeDAO' defined in org.example.config.AppConfig: Unsatisfied dependency expressed through method 'traineeDAO' parameter 0: Error creating bean with name 'sessionFactory' defined in class path resource [org/example/config/HibernateConfig.class]: Cannot invoke "org.hibernate.mapping.ToOne.getReferencedEntityName()" because "toOne" is null
+12:55:21.454 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+12:55:21.462 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+12:55:22.295 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+12:55:22.709 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+12:55:22.826 [main] INFO  org.example.facade.GymFacade - Reading trainees...
+12:55:23.046 [main] ERROR org.example.dao.TraineeDAO - Error while finding all trainees
+java.lang.IllegalArgumentException: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainee'
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:138) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:162) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:168) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:795) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:120) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.example.dao.TraineeDAO.getAllTrainees(TraineeDAO.java:71) [classes/:?]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:391) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) [spring-tx-6.0.11.jar:6.0.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:751) [spring-aop-6.0.13.jar:6.0.13]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:703) [spring-aop-6.0.13.jar:6.0.13]
+	at org.example.dao.TraineeDAO$$SpringCGLIB$$0.getAllTrainees(<generated>) [classes/:?]
+	at org.example.service.TraineeService.getAllTrainees(TraineeService.java:69) [classes/:?]
+	at org.example.facade.GymFacade.readTrainees(GymFacade.java:36) [classes/:?]
+	at org.example.App.main(App.java:12) [classes/:?]
+Caused by: org.hibernate.query.sqm.UnknownEntityException: Could not resolve root entity 'Trainee'
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:1960) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitRootEntity(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$RootEntityContext.accept(HqlParser.java:2473) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitEntityWithJoins(SemanticQueryBuilder.java:1874) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitFromClause(SemanticQueryBuilder.java:1865) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuery(SemanticQueryBuilder.java:1141) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:937) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitQuerySpecExpression(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$QuerySpecExpressionContext.accept(HqlParser.java:1818) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:931) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSimpleQueryGroup(SemanticQueryBuilder.java:253) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.grammars.hql.HqlParser$SimpleQueryGroupContext.accept(HqlParser.java:1711) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitSelectStatement(SemanticQueryBuilder.java:418) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.visitStatement(SemanticQueryBuilder.java:377) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.SemanticQueryBuilder.buildSemanticModel(SemanticQueryBuilder.java:295) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.hql.internal.StandardHqlTranslator.translate(StandardHqlTranslator.java:81) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.createHqlInterpretation(QueryInterpretationCacheStandardImpl.java:165) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.query.internal.QueryInterpretationCacheStandardImpl.resolveHqlInterpretation(QueryInterpretationCacheStandardImpl.java:147) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.interpretHql(AbstractSharedSessionContract.java:741) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	at org.hibernate.internal.AbstractSharedSessionContract.createQuery(AbstractSharedSessionContract.java:786) ~[hibernate-core-6.2.8.Final.jar:6.2.8.Final]
+	... 20 more

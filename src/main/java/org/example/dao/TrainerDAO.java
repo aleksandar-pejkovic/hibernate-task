@@ -43,31 +43,20 @@ public class TrainerDAO {
         }
     }
 
-    public Trainer findById(long id) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = null;
-        Trainer trainer = null;
-
+    public Trainer findByUsername(String username) {
         try {
-            transaction = session.beginTransaction();
-            trainer = session.get(Trainer.class, id);
-            transaction.commit();
-            if (trainer == null) {
-                logger.error("Trainer not found by ID: {}", id);
-            }
+            Session session = sessionFactory.getCurrentSession();
+            Query<Trainer> query = session.createQuery("FROM Trainer t where t.user.username = :username",
+                    Trainer.class);
+            query.setParameter("username", username);
+            return query.getSingleResult();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            logger.error("Error while finding trainer by ID: " + id, e);
-        } finally {
-            session.close();
+            logger.error("Error while finding trainer by USERNAME: " + username, e);
+            throw e;
         }
-
-        return trainer;
     }
 
-    public Trainer update(Trainer trainer) {
+    public void update(Trainer trainer) {
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
 
@@ -76,13 +65,11 @@ public class TrainerDAO {
             Trainer updatedTrainer = (Trainer) session.merge(trainer);
             transaction.commit();
             logger.info("Trainer updated successfully. ID: {}", updatedTrainer.getId());
-            return updatedTrainer;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
             logger.error("Error while updating trainer", e);
-            return null;
         } finally {
             session.close();
         }

@@ -46,9 +46,9 @@ public class TrainerService {
         logger.info("Trainer created: {}", trainer);
     }
 
-    public Trainer getTrainerById(long id) {
-        Trainer trainer = trainerDAO.findById(id);
-        logger.info("Retrieved Trainer by ID {}: {}", id, trainer);
+    public Trainer getTrainerByUsername(String username) {
+        Trainer trainer = trainerDAO.findByUsername(username);
+        logger.info("Retrieved Trainer by USERNAME {}: {}", username, trainer);
         return trainer;
     }
 

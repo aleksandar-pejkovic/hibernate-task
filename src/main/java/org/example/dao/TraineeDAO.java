@@ -35,12 +35,15 @@ public class TraineeDAO {
         }
     }
 
-    public Trainee findById(long id) {
+    public Trainee findByUsername(String username) {
         try {
             Session session = sessionFactory.getCurrentSession();
-            return session.get(Trainee.class, id);
+            Query<Trainee> query = session.createQuery("FROM Trainee t where t.user.username = :username",
+                    Trainee.class);
+            query.setParameter("username", username);
+            return query.getSingleResult();
         } catch (Exception e) {
-            logger.error("Error while finding trainee by ID: " + id, e);
+            logger.error("Error while finding trainee by USERNAME: " + username, e);
             throw e;
         }
     }

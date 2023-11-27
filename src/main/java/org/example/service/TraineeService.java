@@ -46,9 +46,9 @@ public class TraineeService {
         logger.info("Trainee created: {}", trainee);
     }
 
-    public Trainee getTraineeById(long id) {
-        Trainee trainee = traineeDAO.findById(id);
-        logger.info("Retrieved Trainee by ID {}: {}", id, trainee);
+    public Trainee getTraineeByUsername(String username) {
+        Trainee trainee = traineeDAO.findByUsername(username);
+        logger.info("Retrieved Trainee by USERNAME {}: {}", username, trainee);
         return trainee;
     }
 
