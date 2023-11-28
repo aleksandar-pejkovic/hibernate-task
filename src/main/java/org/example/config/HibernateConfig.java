@@ -20,7 +20,7 @@ public class HibernateConfig {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan(
-                new String[]{"com.baeldung.hibernate.bootstrap.model"});
+                new String[]{"org.example"});
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;

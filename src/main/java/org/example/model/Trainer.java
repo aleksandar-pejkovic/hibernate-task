@@ -37,9 +37,9 @@ public class Trainer {
     private User user;
 
     @ManyToMany(mappedBy = "trainerList")
-    private List<Trainer> trainerList = new ArrayList<>();
+    private List<Trainee> traineeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trainee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "trainer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Training> trainingList = new ArrayList<>();
 
     public String getUsername() {
