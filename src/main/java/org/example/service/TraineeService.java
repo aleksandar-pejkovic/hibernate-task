@@ -8,6 +8,7 @@ import org.example.utils.CredentialsGenerator;
 import org.example.utils.UserAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -90,6 +91,7 @@ public class TraineeService {
         logger.info("Trainee deleted with ID: {}", trainee.getId());
     }
 
+    @Transactional(readOnly = true)
     public List<Trainee> getAllTrainees() {
         List<Trainee> trainees = traineeDAO.getAllTrainees();
         logger.info("Retrieved all Trainees: {}", trainees);

@@ -43,7 +43,7 @@ public class CredentialsGenerator {
     @Transactional
     public String generateUsername(User user) {
         logger.info("Generating username...");
-        String baseUsername = user.getUsername() + "." + user.getLastName();
+        String baseUsername = user.getFirstName() + "." + user.getLastName();
         long count = fetchCountForMatchingUsername(baseUsername);
         return (count > 0) ? baseUsername + ++count : baseUsername;
     }
