@@ -19,8 +19,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(
-                new String[]{"org.example"});
+        sessionFactory.setPackagesToScan("org.example");
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;
@@ -47,10 +46,9 @@ public class HibernateConfig {
 
     private final Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty(
-                "hibernate.hbm2ddl.auto", "create-drop");
-        hibernateProperties.setProperty(
-                "hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        hibernateProperties.setProperty("hibernate.globally_quoted_identifiers", "true");
 
         return hibernateProperties;
     }

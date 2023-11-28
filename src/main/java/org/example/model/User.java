@@ -28,11 +28,5 @@ public class User {
     private String password;
 
     private boolean isActive;
-
-    @OneToOne(mappedBy = "user")
-    private Trainer trainer;
-
-    @OneToOne(mappedBy = "user")
-    private Trainee trainee;
 }
 
