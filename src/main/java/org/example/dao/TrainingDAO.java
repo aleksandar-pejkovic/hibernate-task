@@ -1,5 +1,9 @@
 package org.example.dao;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.model.Training;
@@ -10,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -38,6 +43,28 @@ public class TrainingDAO {
             logger.error("Training not found by ID: {}", id);
         }
         return training;
+    }
+
+    public List<Training> getTraineeTrainingList(String username) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Training> criteria = builder.createQuery(Training.class);
+        Root<Training> root = criteria.from(Training.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(builder.equal(root.get("trainee.user.username"), username));
+        criteria.select(root).where(predicates.toArray(new Predicate[]{}));
+        return session.createQuery(criteria).getResultList();
+    }
+
+    public List<Training> getTrainerTrainingList(String username) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Training> criteria = builder.createQuery(Training.class);
+        Root<Training> root = criteria.from(Training.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(builder.equal(root.get("trainer.user.username"), username));
+        criteria.select(root).where(predicates.toArray(new Predicate[]{}));
+        return session.createQuery(criteria).getResultList();
     }
 
     public Training update(Training training) {

@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.dao.TrainingDAO;
 import org.example.model.Training;
+import org.example.utils.UserAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +17,16 @@ public class TrainingService {
 
     private final TrainingDAO trainingDAO;
 
+    private UserAuthentication authentication;
+
     @Autowired
     public TrainingService(TrainingDAO trainingDAO) {
         this.trainingDAO = trainingDAO;
+    }
+
+    @Autowired
+    public void setAuthentication(UserAuthentication authentication) {
+        this.authentication = authentication;
     }
 
     public void createTraining(Training training) {
@@ -43,7 +51,24 @@ public class TrainingService {
         logger.info("Training deleted with ID: {}", training.getId());
     }
 
+    public List<Training> getTraineeTrainingList(String username, String password) {
+        authentication.authenticateUser(username, password);
+        logger.info("Retrieving training list for trainee with USERNAME: {}", username);
+        List<Training> trainingList = trainingDAO.getTraineeTrainingList(username);
+        logger.info("Successfully retrieved training list: {}", trainingList);
+        return trainingList;
+    }
+
+    public List<Training> getTrainerTrainingList(String username, String password) {
+        authentication.authenticateUser(username, password);
+        logger.info("Retrieving training list for trainer with USERNAME: {}", username);
+        List<Training> trainingList = trainingDAO.getTrainerTrainingList(username);
+        logger.info("Successfully retrieved training list: {}", trainingList);
+        return trainingList;
+    }
+
     public List<Training> getAllTrainings() {
+        logger.info("Reading trainings...");
         List<Training> trainings = trainingDAO.getAllTrainings();
         logger.info("Retrieved all Trainings: {}", trainings);
         return trainings;

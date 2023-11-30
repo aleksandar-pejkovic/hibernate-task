@@ -85,7 +85,14 @@ public class TrainerService {
 
     public void deleteTrainer(String username, String password) {
         authentication.authenticateUser(username, password);
+        logger.info("Deleting trainer with USERNAME: {}", username);
         trainerDAO.delete(username);
+    }
+
+    public List<Trainer> getNotAssignedTrainerList(String traineeUsername, String password) {
+        authentication.authenticateUser(traineeUsername, password);
+        logger.info("Retrieving trainer list for trainee with USERNAME: {}", traineeUsername);
+        return trainerDAO.getNotAssigned(traineeUsername);
     }
 
     public List<Trainer> getAllTrainers() {

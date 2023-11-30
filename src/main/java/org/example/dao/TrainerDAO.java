@@ -60,6 +60,20 @@ public class TrainerDAO {
         }
     }
 
+    public List<Trainer> getNotAssigned(String traineeUsername) {
+        Session session = sessionFactory.getCurrentSession();
+
+        String hql = "SELECT t FROM Trainer t WHERE t.id NOT IN " +
+                "(SELECT tr.id FROM Trainee te JOIN te.trainerList tr WHERE te.user.username = :username)";
+
+        Query<Trainer> query = session.createQuery(hql, Trainer.class);
+        query.setParameter("username", traineeUsername);
+
+        List<Trainer> trainerList = query.getResultList();
+        logger.info("Successfully retrieved trainer list: {}", trainerList);
+        return trainerList;
+    }
+
     public List<Trainer> getAllTrainers() {
         Session session = sessionFactory.getCurrentSession();
         Query<Trainer> query = session.createQuery("FROM Trainer", Trainer.class);

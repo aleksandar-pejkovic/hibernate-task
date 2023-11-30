@@ -111,14 +111,16 @@ public class GymFacade {
     }
 
     public void deleteTrainer(String username, String password) {
-        logger.info("Deleting trainer with USERNAME: {}", username);
         trainerService.deleteTrainer(username, password);
+    }
+
+    public List<Trainer> readNotAssignedTrainerList(String traineeUsername, String password) {
+        return trainerService.getNotAssignedTrainerList(traineeUsername, password);
     }
 
     // Training-related methods
 
     public void readTrainings() {
-        logger.info("Reading trainings...");
         List<Training> trainings = trainingService.getAllTrainings();
     }
 
@@ -140,5 +142,13 @@ public class GymFacade {
     public void deleteTraining(Training training) {
         logger.info("Deleting training with ID: {}", training.getId());
         trainingService.deleteTraining(training);
+    }
+
+    public List<Training> readTraineeTrainingList(String username, String password) {
+        return trainingService.getTraineeTrainingList(username, password);
+    }
+
+    public List<Training> readTrainerTrainingList(String username, String password) {
+        return trainingService.getTrainerTrainingList(username, password);
     }
 }
