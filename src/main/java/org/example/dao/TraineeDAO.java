@@ -8,12 +8,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
-@Transactional
 public class TraineeDAO {
 
     private static final Logger logger = LogManager.getLogger(TraineeDAO.class);
@@ -39,7 +37,7 @@ public class TraineeDAO {
 
     public Trainee update(Trainee trainee) {
         Session session = sessionFactory.getCurrentSession();
-        return (Trainee) session.merge(trainee);
+        return session.merge(trainee);
     }
 
     public void delete(String username) {

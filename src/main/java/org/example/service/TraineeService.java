@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class TraineeService {
 
     private static final Logger logger = LogManager.getLogger(TraineeService.class);
@@ -90,7 +91,6 @@ public class TraineeService {
         traineeDAO.delete(username);
     }
 
-    @Transactional(readOnly = true)
     public List<Trainee> getAllTrainees() {
         List<Trainee> trainees = traineeDAO.getAllTrainees();
         logger.info("Retrieved all Trainees: {}", trainees);

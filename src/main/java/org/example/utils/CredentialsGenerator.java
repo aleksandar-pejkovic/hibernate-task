@@ -37,7 +37,9 @@ public class CredentialsGenerator {
             int randomIndex = random.nextInt(CHARACTERS.length());
             password.append(CHARACTERS.charAt(randomIndex));
         }
-        return password.toString();
+        // for testing with h2 in-memory db
+        return "1234567890";
+//        return password.toString();
     }
 
     @Transactional

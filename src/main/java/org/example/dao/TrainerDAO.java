@@ -8,12 +8,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
-@Transactional
 public class TrainerDAO {
 
     private static final Logger logger = LogManager.getLogger(TrainerDAO.class);
@@ -40,7 +38,7 @@ public class TrainerDAO {
 
     public Trainer update(Trainer trainer) {
         Session session = sessionFactory.getCurrentSession();
-        return (Trainer) session.merge(trainer);
+        return session.merge(trainer);
     }
 
     public void delete(String username) {
@@ -70,7 +68,7 @@ public class TrainerDAO {
         query.setParameter("username", traineeUsername);
 
         List<Trainer> trainerList = query.getResultList();
-        logger.info("Successfully retrieved trainer list: {}", trainerList);
+        logger.info("Successfully retrieved unassigned trainers list: {}", trainerList);
         return trainerList;
     }
 

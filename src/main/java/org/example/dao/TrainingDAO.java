@@ -12,13 +12,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@Transactional
 public class TrainingDAO {
 
     private static final Logger logger = LogManager.getLogger(TrainingDAO.class);
@@ -51,7 +49,7 @@ public class TrainingDAO {
         CriteriaQuery<Training> criteria = builder.createQuery(Training.class);
         Root<Training> root = criteria.from(Training.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get("trainee.user.username"), username));
+        predicates.add(builder.equal(root.get("trainee").get("user").get("username"), username));
         criteria.select(root).where(predicates.toArray(new Predicate[]{}));
         return session.createQuery(criteria).getResultList();
     }
@@ -62,7 +60,7 @@ public class TrainingDAO {
         CriteriaQuery<Training> criteria = builder.createQuery(Training.class);
         Root<Training> root = criteria.from(Training.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get("trainer.user.username"), username));
+        predicates.add(builder.equal(root.get("trainee").get("user").get("username"), username));
         criteria.select(root).where(predicates.toArray(new Predicate[]{}));
         return session.createQuery(criteria).getResultList();
     }

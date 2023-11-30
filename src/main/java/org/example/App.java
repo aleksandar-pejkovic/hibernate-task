@@ -1,13 +1,13 @@
 package org.example;
 
-import java.util.Date;
-
 import org.example.config.AppConfig;
 import org.example.config.HibernateConfig;
 import org.example.facade.GymFacade;
 import org.example.model.Trainee;
 import org.example.model.User;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.util.Date;
 
 class App {
     public static void main(String[] args) {
@@ -31,6 +31,8 @@ class App {
         gymFacade.readTrainees();
         gymFacade.readTrainers();
         gymFacade.readTrainings();
+        gymFacade.readTraineeTrainingList("Max.Biaggi", "1234567890");
+        gymFacade.readNotAssignedTrainerList("Max.Biaggi", "1234567890");
 
         context.close();
     }
