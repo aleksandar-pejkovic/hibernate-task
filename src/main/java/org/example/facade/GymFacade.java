@@ -68,9 +68,9 @@ public class GymFacade {
         return traineeService.deactivateTrainee(trainee);
     }
 
-    public void deleteTrainee(Trainee trainee) {
-        logger.info("Deleting trainee with ID: {}", trainee.getId());
-        traineeService.deleteTrainee(trainee);
+    public void deleteTrainee(String username, String password) {
+        logger.info("Deleting trainee with USERNAME: {}", username);
+        traineeService.deleteTrainee(username, password);
     }
 
     // Trainer-related methods
@@ -110,9 +110,9 @@ public class GymFacade {
         return trainerService.deactivateTrainer(trainer);
     }
 
-    public void deleteTrainer(Trainer trainer) {
-        logger.info("Deleting trainer with ID: {}", trainer.getId());
-        trainerService.deleteTrainer(trainer);
+    public void deleteTrainer(String username, String password) {
+        logger.info("Deleting trainer with USERNAME: {}", username);
+        trainerService.deleteTrainer(username, password);
     }
 
     // Training-related methods

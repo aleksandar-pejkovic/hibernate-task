@@ -43,10 +43,21 @@ public class TrainerDAO {
         return (Trainer) session.merge(trainer);
     }
 
-    public void delete(Trainer trainer) {
+    public void delete(String username) {
         Session session = sessionFactory.getCurrentSession();
-        session.remove(trainer);
-        logger.info("Trainer deleted successfully. ID: {}", trainer.getId());
+        Query<Long> subQuery = session.createQuery("SELECT t.id FROM Trainer t WHERE t.user.username = :username",
+                Long.class);
+        subQuery.setParameter("username", username);
+
+        Long trainerId = subQuery.uniqueResult();
+
+        if (trainerId != null) {
+            Trainer trainer = session.get(Trainer.class, trainerId);
+            session.remove(trainer);
+            logger.info("Trainer deleted successfully. USERNAME: {}", username);
+        } else {
+            logger.error("Trainer not found for USERNAME: {}", username);
+        }
     }
 
     public List<Trainer> getAllTrainers() {

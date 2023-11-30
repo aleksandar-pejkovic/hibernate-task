@@ -16,13 +16,13 @@ class App {
 
         User user = User.builder()
                 .isActive(true)
-                .lastName("Pejko")
-                .firstName("Alex")
+                .lastName("Biaggi")
+                .firstName("Max")
                 .build();
 
         Trainee trainee = Trainee.builder()
                 .user(user)
-                .address("Ibrez bb")
+                .address("11000 Belgrade")
                 .dateOfBirth(new Date())
                 .build();
 

@@ -83,10 +83,9 @@ public class TrainerService {
         return updatedTrainer;
     }
 
-    public void deleteTrainer(Trainer trainer) {
-        authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
-        trainerDAO.delete(trainer);
-        logger.info("Trainer deleted with ID: {}", trainer.getId());
+    public void deleteTrainer(String username, String password) {
+        authentication.authenticateUser(username, password);
+        trainerDAO.delete(username);
     }
 
     public List<Trainer> getAllTrainers() {

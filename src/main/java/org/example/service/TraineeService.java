@@ -85,10 +85,9 @@ public class TraineeService {
         return updatedTrainee;
     }
 
-    public void deleteTrainee(Trainee trainee) {
-        authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
-        traineeDAO.delete(trainee);
-        logger.info("Trainee deleted with ID: {}", trainee.getId());
+    public void deleteTrainee(String username, String password) {
+        authentication.authenticateUser(username, password);
+        traineeDAO.delete(username);
     }
 
     @Transactional(readOnly = true)
