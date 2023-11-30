@@ -1,5 +1,7 @@
 package org.example.service;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.dao.TrainingDAO;
@@ -8,8 +10,6 @@ import org.example.utils.UserAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional
@@ -53,18 +53,18 @@ public class TrainingService {
         logger.info("Training deleted with ID: {}", training.getId());
     }
 
-    public List<Training> getTraineeTrainingList(String username, String password) {
+    public List<Training> getTraineeTrainingList(String username, String password, int trainingDuration) {
         authentication.authenticateUser(username, password);
         logger.info("Retrieving training list for trainee with USERNAME: {}", username);
-        List<Training> trainingList = trainingDAO.getTraineeTrainingList(username);
+        List<Training> trainingList = trainingDAO.getTraineeTrainingList(username, trainingDuration);
         logger.info("Successfully retrieved training list: {}", trainingList);
         return trainingList;
     }
 
-    public List<Training> getTrainerTrainingList(String username, String password) {
+    public List<Training> getTrainerTrainingList(String username, String password, int trainingDuration) {
         authentication.authenticateUser(username, password);
         logger.info("Retrieving training list for trainer with USERNAME: {}", username);
-        List<Training> trainingList = trainingDAO.getTrainerTrainingList(username);
+        List<Training> trainingList = trainingDAO.getTrainerTrainingList(username, trainingDuration);
         logger.info("Successfully retrieved training list: {}", trainingList);
         return trainingList;
     }

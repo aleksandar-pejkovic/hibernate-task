@@ -31,7 +31,7 @@ class App {
         gymFacade.readTrainees();
         gymFacade.readTrainers();
         gymFacade.readTrainings();
-        gymFacade.readTraineeTrainingList("Max.Biaggi", "1234567890");
+        gymFacade.readTraineeTrainingList("Max.Biaggi", "1234567890", 50);
         gymFacade.readNotAssignedTrainerList("Max.Biaggi", "1234567890");
 
         context.close();
