@@ -89,10 +89,10 @@ public class TrainerService {
     }
 
     @Transactional
-    public void deleteTrainer(String username, String password) {
+    public boolean deleteTrainer(String username, String password) {
         authentication.authenticateUser(username, password);
         log.info("Deleting trainer with USERNAME: {}", username);
-        trainerDAO.delete(username);
+        return trainerDAO.delete(username);
     }
 
     @Transactional(readOnly = true)

@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -75,10 +76,15 @@ public class TrainingDAO {
 
     public boolean delete(Training training) {
         Session session = sessionFactory.getCurrentSession();
-        session.merge(training);
-        session.remove(training);
-        log.info("Training deleted successfully. ID: {}", training.getId());
-        return true;
+        try {
+            session.merge(training);
+            session.remove(training);
+            log.info("Training deleted successfully. ID: {}", training.getId());
+            return true;
+        } catch (EntityNotFoundException e) {
+            log.error("there was an error. Training was not deleted. ID: {}", training.getId(), e);
+            return false;
+        }
     }
 
     public List<Training> getAllTrainings() {

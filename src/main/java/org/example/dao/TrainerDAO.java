@@ -40,7 +40,7 @@ public class TrainerDAO {
         return session.merge(trainer);
     }
 
-    public void delete(String username) {
+    public boolean delete(String username) {
         Session session = sessionFactory.getCurrentSession();
         Query<Long> subQuery = session.createQuery("SELECT t.id FROM Trainer t WHERE t.user.username = :username",
                 Long.class);
@@ -52,8 +52,10 @@ public class TrainerDAO {
             Trainer trainer = session.get(Trainer.class, trainerId);
             session.remove(trainer);
             log.info("Trainer deleted successfully. USERNAME: {}", username);
+            return true;
         } else {
             log.error("Trainer not found for USERNAME: {}", username);
+            return false;
         }
     }
 

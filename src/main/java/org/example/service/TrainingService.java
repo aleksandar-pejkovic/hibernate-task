@@ -58,9 +58,9 @@ public class TrainingService {
         Trainee trainee = training.getTrainee();
         Trainer trainer = training.getTrainer();
         trainee.removeTrainer(trainer);
-        trainingDAO.delete(training);
+        boolean result = trainingDAO.delete(training);
         log.info("Training deleted with ID: {}", training.getId());
-        return true;
+        return result;
     }
 
     @Transactional(readOnly = true)
