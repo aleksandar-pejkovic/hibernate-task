@@ -1,0 +1,187 @@
+package org.example.service;
+
+import org.example.dao.TraineeDAO;
+import org.example.model.Trainee;
+import org.example.model.User;
+import org.example.utils.CredentialsGenerator;
+import org.example.utils.UserAuthentication;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+class TraineeServiceTest {
+
+    @Mock
+    private TraineeDAO traineeDAO;
+
+    @Mock
+    private CredentialsGenerator credentialsGenerator;
+
+    @Mock
+    private UserAuthentication userAuthentication;
+
+    @InjectMocks
+    private TraineeService traineeService;
+
+    private Trainee trainee;
+
+    private User user;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        traineeService = new TraineeService(traineeDAO);
+        ReflectionTestUtils.setField(traineeService, "generator", credentialsGenerator);
+        ReflectionTestUtils.setField(traineeService, "authentication", userAuthentication);
+
+        user = User.builder()
+                .isActive(true)
+                .lastName("Biaggi")
+                .firstName("Max")
+                .username("Max.Biaggi")
+                .password("0123456789")
+                .build();
+
+        trainee = Trainee.builder()
+                .user(user)
+                .address("11000 Belgrade")
+                .dateOfBirth(new Date())
+                .build();
+
+        doNothing().when(userAuthentication).authenticateUser(eq(trainee.getUsername()), eq(trainee.getPassword()));
+    }
+
+    @Test
+    void createTrainee() {
+        // Arrange
+        when(credentialsGenerator.generateUsername(trainee.getUser())).thenReturn("Max.Biaggi");
+        when(credentialsGenerator.generateRandomPassword()).thenReturn("0123456789");
+
+        // Act
+        traineeService.createTrainee(trainee);
+
+        // Assert
+        verify(traineeDAO, times(1)).save(trainee);
+        assertEquals("Max.Biaggi", trainee.getUser().getUsername());
+        assertEquals("0123456789", trainee.getUser().getPassword());
+    }
+
+    @Test
+    void getTraineeByUsername() {
+        // Arrange
+        String username = "testUser";
+        Trainee expectedTrainee = new Trainee();
+        when(traineeDAO.findByUsername(username)).thenReturn(expectedTrainee);
+
+        // Act
+        Trainee result = traineeService.getTraineeByUsername(username);
+
+        // Assert
+        verify(traineeDAO, times(1)).findByUsername(username);
+        assertEquals(expectedTrainee, result);
+    }
+
+    @Test
+    void changePassword() {
+        // Arrange
+        String username = "testUser";
+        String oldPassword = "oldPassword";
+        String newPassword = "newPassword";
+
+        when(traineeService.getTraineeByUsername(username)).thenReturn(trainee);
+        when(traineeDAO.update(trainee)).thenReturn(trainee);
+
+        // Act
+        Trainee result = traineeService.changePassword(username, oldPassword, newPassword);
+
+        // Assert
+        verify(userAuthentication, times(1)).authenticateUser(username, oldPassword);
+        verify(traineeDAO, times(1)).update(trainee);
+        assertEquals(newPassword, result.getPassword());
+    }
+
+    @Test
+    void updateTrainee() {
+        // Arrange
+        when(traineeDAO.update(trainee)).thenReturn(trainee);
+
+        // Act
+        Trainee result = traineeService.updateTrainee(trainee);
+
+        // Assert
+        verify(userAuthentication, times(1)).authenticateUser(trainee.getUsername(), trainee.getPassword());
+        verify(traineeDAO, times(1)).update(trainee);
+        assertEquals(trainee, result);
+    }
+
+    @Test
+    void activateTrainee() {
+        // Arrange
+        when(traineeDAO.update(trainee)).thenReturn(trainee);
+
+        // Act
+        Trainee result = traineeService.activateTrainee(trainee);
+
+        // Assert
+        verify(userAuthentication, times(1)).authenticateUser(trainee.getUsername(), trainee.getPassword());
+        verify(traineeDAO, times(1)).update(trainee);
+    }
+
+    @Test
+    void deactivateTrainee() {
+        // Arrange
+        when(traineeDAO.update(trainee)).thenReturn(trainee);
+
+        // Act
+        Trainee result = traineeService.deactivateTrainee(trainee);
+
+        // Assert
+        verify(userAuthentication, times(1)).authenticateUser(trainee.getUsername(), trainee.getPassword());
+        verify(traineeDAO, times(1)).update(trainee);
+    }
+
+    @Test
+    void deleteTrainee() {
+        // Arrange
+        String username = "testUser";
+        String password = "testPassword";
+        when(traineeDAO.delete(username)).thenReturn(true);
+
+        // Act
+        boolean result = traineeService.deleteTrainee(username, password);
+
+        // Assert
+        verify(userAuthentication, times(1)).authenticateUser(username, password);
+        verify(traineeDAO, times(1)).delete(username);
+        assertTrue(result);
+    }
+
+    @Test
+    void getAllTrainees() {
+        // Arrange
+        List<Trainee> expectedTrainees = Collections.singletonList(new Trainee());
+        when(traineeDAO.getAllTrainees()).thenReturn(expectedTrainees);
+
+        // Act
+        List<Trainee> result = traineeService.getAllTrainees();
+
+        // Assert
+        verify(traineeDAO, times(1)).getAllTrainees();
+        assertEquals(expectedTrainees, result);
+    }
+}
