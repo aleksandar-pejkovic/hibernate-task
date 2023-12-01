@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Slf4j
@@ -35,7 +36,7 @@ public class TrainingDAO {
     public Training findById(long id) {
         Session session = sessionFactory.getCurrentSession();
         Training training = session.get(Training.class, id);
-        if (training == null) {
+        if (Optional.ofNullable(training).isEmpty()) {
             log.error("Training not found by ID: {}", id);
         }
         return training;

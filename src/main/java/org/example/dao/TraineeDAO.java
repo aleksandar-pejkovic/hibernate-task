@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Slf4j
@@ -46,7 +47,7 @@ public class TraineeDAO {
 
         Long traineeId = subQuery.uniqueResult();
 
-        if (traineeId != null) {
+        if (Optional.ofNullable(traineeId).isPresent()) {
             Trainee trainee = session.get(Trainee.class, traineeId);
             session.remove(trainee);
             log.info("Trainee deleted successfully. USERNAME: {}", username);
