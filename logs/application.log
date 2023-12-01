@@ -2284,3 +2284,25 @@ org.hibernate.HibernateException: Could not obtain transaction-synchronized Sess
 11:09:49.905 [main] INFO  org.example.utils.UserAuthentication - Successful user authentication
 11:09:49.906 [main] INFO  org.example.service.TrainerService - Retrieving trainer list for trainee with USERNAME: Max.Biaggi
 11:09:50.012 [main] INFO  org.example.dao.TrainerDAO - Successfully retrieved unassigned trainers list: []
+11:19:16.078 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+11:19:16.087 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+11:19:17.127 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+11:19:18.204 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+11:19:18.415 [main] INFO  org.example.facade.GymFacade - Creating trainee...
+11:19:18.467 [main] INFO  org.example.utils.CredentialsGenerator - Generating username...
+11:19:18.926 [main] INFO  org.example.utils.CredentialsGenerator - Generating password...
+11:19:18.973 [main] INFO  org.example.service.TraineeService - Trainee created: Trainee(id=1, dateOfBirth=Fri Dec 01 11:19:18 CET 2023, address=11000 Belgrade, user=User(id=1, firstName=Max, lastName=Biaggi, username=Max.Biaggi, password=1234567890, isActive=true), trainerList=null, trainingList=null)
+11:19:18.982 [main] INFO  org.example.facade.GymFacade - Reading trainees...
+11:19:19.034 [main] INFO  org.example.service.TraineeService - Retrieved all Trainees: [Trainee(id=1, dateOfBirth=2023-12-01 11:19:18.414, address=11000 Belgrade, user=User(id=1, firstName=Max, lastName=Biaggi, username=Max.Biaggi, password=1234567890, isActive=true), trainerList=[], trainingList=[])]
+11:19:19.036 [main] INFO  org.example.facade.GymFacade - Reading trainers...
+11:19:19.038 [main] INFO  org.example.dao.TrainerDAO - Retrieved all trainers. Count: 0
+11:19:19.039 [main] INFO  org.example.service.TrainerService - Retrieved all Trainers: []
+11:19:19.039 [main] INFO  org.example.service.TrainingService - Reading trainings...
+11:19:19.043 [main] INFO  org.example.dao.TrainingDAO - Retrieved all trainings. Count: 0
+11:19:19.043 [main] INFO  org.example.service.TrainingService - Retrieved all Trainings: []
+11:19:19.058 [main] INFO  org.example.utils.UserAuthentication - Successful user authentication
+11:19:19.058 [main] INFO  org.example.service.TrainingService - Retrieving training list for trainee with USERNAME: Max.Biaggi
+11:19:19.069 [main] INFO  org.example.service.TrainingService - Successfully retrieved training list: []
+11:19:19.071 [main] INFO  org.example.utils.UserAuthentication - Successful user authentication
+11:19:19.072 [main] INFO  org.example.service.TrainerService - Retrieving trainer list for trainee with USERNAME: Max.Biaggi
+11:19:19.133 [main] INFO  org.example.dao.TrainerDAO - Successfully retrieved unassigned trainers list: []
