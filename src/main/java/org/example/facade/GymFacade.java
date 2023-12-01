@@ -137,9 +137,9 @@ public class GymFacade {
         return trainingService.updateTraining(training);
     }
 
-    public void deleteTraining(Training training) {
+    public boolean deleteTraining(Training training) {
         log.info("Deleting training with ID: {}", training.getId());
-        trainingService.deleteTraining(training);
+        return trainingService.deleteTraining(training);
     }
 
     public List<Training> readTraineeTrainingList(String username, String password, int trainingDuration) {

@@ -1,6 +1,16 @@
 package org.example.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -58,5 +68,15 @@ public class Trainee {
 
     public void deactivateAccount() {
         this.getUser().setActive(false);
+    }
+
+    public void addTrainer(Trainer trainer) {
+        trainer.getTraineeList().add(this);
+        this.getTrainerList().add(trainer);
+    }
+
+    public void removeTrainer(Trainer trainer) {
+        trainer.getTraineeList().remove(this);
+        this.getTrainerList().remove(trainer);
     }
 }

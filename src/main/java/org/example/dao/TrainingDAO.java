@@ -73,10 +73,12 @@ public class TrainingDAO {
         return updatedTraining;
     }
 
-    public void delete(Training training) {
+    public boolean delete(Training training) {
         Session session = sessionFactory.getCurrentSession();
+        session.merge(training);
         session.remove(training);
         log.info("Training deleted successfully. ID: {}", training.getId());
+        return true;
     }
 
     public List<Training> getAllTrainings() {

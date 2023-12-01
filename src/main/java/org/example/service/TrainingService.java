@@ -2,6 +2,8 @@ package org.example.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.dao.TrainingDAO;
+import org.example.model.Trainee;
+import org.example.model.Trainer;
 import org.example.model.Training;
 import org.example.utils.UserAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class TrainingService {
 
     @Transactional
     public void createTraining(Training training) {
+        Trainee trainee = training.getTrainee();
+        Trainer trainer = training.getTrainer();
+        trainee.addTrainer(trainer);
         trainingDAO.save(training);
         log.info("Training created: {}", training);
     }
@@ -49,9 +54,13 @@ public class TrainingService {
     }
 
     @Transactional
-    public void deleteTraining(Training training) {
+    public boolean deleteTraining(Training training) {
+        Trainee trainee = training.getTrainee();
+        Trainer trainer = training.getTrainer();
+        trainee.removeTrainer(trainer);
         trainingDAO.delete(training);
         log.info("Training deleted with ID: {}", training.getId());
+        return true;
     }
 
     @Transactional(readOnly = true)
