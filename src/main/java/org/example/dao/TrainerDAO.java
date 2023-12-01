@@ -1,7 +1,6 @@
 package org.example.dao;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.example.model.Trainer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,9 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
+@Slf4j
 public class TrainerDAO {
-
-    private static final Logger logger = LogManager.getLogger(TrainerDAO.class);
 
     private final SessionFactory sessionFactory;
 
@@ -26,7 +24,7 @@ public class TrainerDAO {
     public void save(Trainer trainer) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(trainer);
-        logger.info("Trainer saved successfully. ID: {}", trainer.getId());
+        log.info("Trainer saved successfully. ID: {}", trainer.getId());
     }
 
     public Trainer findByUsername(String username) {
@@ -52,9 +50,9 @@ public class TrainerDAO {
         if (trainerId != null) {
             Trainer trainer = session.get(Trainer.class, trainerId);
             session.remove(trainer);
-            logger.info("Trainer deleted successfully. USERNAME: {}", username);
+            log.info("Trainer deleted successfully. USERNAME: {}", username);
         } else {
-            logger.error("Trainer not found for USERNAME: {}", username);
+            log.error("Trainer not found for USERNAME: {}", username);
         }
     }
 
@@ -68,7 +66,7 @@ public class TrainerDAO {
         query.setParameter("username", traineeUsername);
 
         List<Trainer> trainerList = query.getResultList();
-        logger.info("Successfully retrieved unassigned trainers list: {}", trainerList);
+        log.info("Successfully retrieved unassigned trainers list: {}", trainerList);
         return trainerList;
     }
 
@@ -76,7 +74,7 @@ public class TrainerDAO {
         Session session = sessionFactory.getCurrentSession();
         Query<Trainer> query = session.createQuery("FROM Trainer", Trainer.class);
         List<Trainer> trainerList = query.list();
-        logger.info("Retrieved all trainers. Count: {}", trainerList.size());
+        log.info("Retrieved all trainers. Count: {}", trainerList.size());
         return trainerList;
     }
 }

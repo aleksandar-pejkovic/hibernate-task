@@ -1,10 +1,10 @@
 package org.example.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import lombok.extern.slf4j.Slf4j;
 import org.example.model.Training;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,15 +12,12 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
+@Slf4j
 public class TrainingDAO {
-
-    private static final Logger logger = LogManager.getLogger(TrainingDAO.class);
 
     private final SessionFactory sessionFactory;
 
@@ -32,14 +29,14 @@ public class TrainingDAO {
     public void save(Training training) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(training);
-        logger.info("Training saved successfully. ID: {}", training.getId());
+        log.info("Training saved successfully. ID: {}", training.getId());
     }
 
     public Training findById(long id) {
         Session session = sessionFactory.getCurrentSession();
         Training training = session.get(Training.class, id);
         if (training == null) {
-            logger.error("Training not found by ID: {}", id);
+            log.error("Training not found by ID: {}", id);
         }
         return training;
     }
@@ -71,21 +68,21 @@ public class TrainingDAO {
     public Training update(Training training) {
         Session session = sessionFactory.getCurrentSession();
         Training updatedTraining = (Training) session.merge(training);
-        logger.info("Training updated successfully. ID: {}", updatedTraining.getId());
+        log.info("Training updated successfully. ID: {}", updatedTraining.getId());
         return updatedTraining;
     }
 
     public void delete(Training training) {
         Session session = sessionFactory.getCurrentSession();
         session.remove(training);
-        logger.info("Training deleted successfully. ID: {}", training.getId());
+        log.info("Training deleted successfully. ID: {}", training.getId());
     }
 
     public List<Training> getAllTrainings() {
         Session session = sessionFactory.getCurrentSession();
         Query<Training> query = session.createQuery("FROM Training", Training.class);
         List<Training> trainingList = query.getResultList();
-        logger.info("Retrieved all trainings. Count: {}", trainingList.size());
+        log.info("Retrieved all trainings. Count: {}", trainingList.size());
         return trainingList;
     }
 }

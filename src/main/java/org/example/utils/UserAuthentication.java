@@ -1,7 +1,6 @@
 package org.example.utils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -9,9 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class UserAuthentication {
-
-    private static final Logger logger = LogManager.getLogger(UserAuthentication.class);
 
     private final SessionFactory sessionFactory;
 
@@ -24,7 +22,7 @@ public class UserAuthentication {
         if (!authenticate(username, password)) {
             throw new RuntimeException("Authentication failed");
         } else {
-            logger.info("Successful user authentication");
+            log.info("Successful user authentication");
         }
     }
 
@@ -38,7 +36,7 @@ public class UserAuthentication {
 
             return query.uniqueResult() > 0;
         } catch (Exception e) {
-            logger.error("Authentication failed", e);
+            log.error("Authentication failed", e);
             return false;
         }
     }

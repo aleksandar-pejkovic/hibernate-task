@@ -1,7 +1,6 @@
 package org.example.service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.example.dao.TrainerDAO;
 import org.example.model.Trainer;
 import org.example.utils.CredentialsGenerator;
@@ -13,10 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
+@Slf4j
 public class TrainerService {
-
-    private static final Logger logger = LogManager.getLogger(TrainerService.class);
 
     private final TrainerDAO trainerDAO;
 
@@ -46,13 +43,13 @@ public class TrainerService {
         trainer.getUser().setUsername(username);
         trainer.getUser().setPassword(password);
         trainerDAO.save(trainer);
-        logger.info("Trainer created: {}", trainer);
+        log.info("Trainer created: {}", trainer);
     }
 
     @Transactional(readOnly = true)
     public Trainer getTrainerByUsername(String username) {
         Trainer trainer = trainerDAO.findByUsername(username);
-        logger.info("Retrieved Trainer by USERNAME {}: {}", username, trainer);
+        log.info("Retrieved Trainer by USERNAME {}: {}", username, trainer);
         return trainer;
     }
 
@@ -62,7 +59,7 @@ public class TrainerService {
         Trainer trainer = getTrainerByUsername(username);
         trainer.setPassword(newPassword);
         Trainer updatedTrainer = trainerDAO.update(trainer);
-        logger.info("Password updated for trainer: {}", trainer);
+        log.info("Password updated for trainer: {}", trainer);
         return updatedTrainer;
     }
 
@@ -70,7 +67,7 @@ public class TrainerService {
     public void updateTrainer(Trainer trainer) {
         authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
         trainerDAO.update(trainer);
-        logger.info("Trainer updated: {}", trainer);
+        log.info("Trainer updated: {}", trainer);
     }
 
     @Transactional
@@ -78,7 +75,7 @@ public class TrainerService {
         authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
         trainer.activateAccount();
         Trainer updatedTrainer = trainerDAO.update(trainer);
-        logger.info("Activated account for trainer: {}", trainer);
+        log.info("Activated account for trainer: {}", trainer);
         return updatedTrainer;
     }
 
@@ -87,28 +84,28 @@ public class TrainerService {
         authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
         trainer.deactivateAccount();
         Trainer updatedTrainer = trainerDAO.update(trainer);
-        logger.info("Deactivated account for trainer: {}", trainer);
+        log.info("Deactivated account for trainer: {}", trainer);
         return updatedTrainer;
     }
 
     @Transactional
     public void deleteTrainer(String username, String password) {
         authentication.authenticateUser(username, password);
-        logger.info("Deleting trainer with USERNAME: {}", username);
+        log.info("Deleting trainer with USERNAME: {}", username);
         trainerDAO.delete(username);
     }
 
     @Transactional(readOnly = true)
     public List<Trainer> getNotAssignedTrainerList(String traineeUsername, String password) {
         authentication.authenticateUser(traineeUsername, password);
-        logger.info("Retrieving trainer list for trainee with USERNAME: {}", traineeUsername);
+        log.info("Retrieving trainer list for trainee with USERNAME: {}", traineeUsername);
         return trainerDAO.getNotAssigned(traineeUsername);
     }
 
     @Transactional(readOnly = true)
     public List<Trainer> getAllTrainers() {
         List<Trainer> trainers = trainerDAO.getAllTrainers();
-        logger.info("Retrieved all Trainers: {}", trainers);
+        log.info("Retrieved all Trainers: {}", trainers);
         return trainers;
     }
 }

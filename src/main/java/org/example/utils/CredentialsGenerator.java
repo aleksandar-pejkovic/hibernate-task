@@ -1,8 +1,7 @@
 package org.example.utils;
 
 import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.example.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Random;
 
 @Component
+@Slf4j
 public class CredentialsGenerator {
 
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -20,8 +20,6 @@ public class CredentialsGenerator {
     private static final int LENGTH = 10;
 
     private static final Random random = new Random();
-
-    private static final Logger logger = LogManager.getLogger(CredentialsGenerator.class);
 
     private final SessionFactory sessionFactory;
 
@@ -31,7 +29,7 @@ public class CredentialsGenerator {
     }
 
     public String generateRandomPassword() {
-        logger.info("Generating password...");
+        log.info("Generating password...");
         StringBuilder password = new StringBuilder(LENGTH);
         for (int i = 0; i < LENGTH; i++) {
             int randomIndex = random.nextInt(CHARACTERS.length());
@@ -44,7 +42,7 @@ public class CredentialsGenerator {
 
     @Transactional
     public String generateUsername(User user) {
-        logger.info("Generating username...");
+        log.info("Generating username...");
         String baseUsername = user.getFirstName() + "." + user.getLastName();
         long count = fetchCountForMatchingUsername(baseUsername);
         return (count > 0) ? baseUsername + ++count : baseUsername;

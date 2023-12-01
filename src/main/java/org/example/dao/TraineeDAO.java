@@ -1,7 +1,6 @@
 package org.example.dao;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.example.model.Trainee;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,9 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
+@Slf4j
 public class TraineeDAO {
-
-    private static final Logger logger = LogManager.getLogger(TraineeDAO.class);
 
     private final SessionFactory sessionFactory;
 
@@ -51,9 +49,9 @@ public class TraineeDAO {
         if (traineeId != null) {
             Trainee trainee = session.get(Trainee.class, traineeId);
             session.remove(trainee);
-            logger.info("Trainee deleted successfully. USERNAME: {}", username);
+            log.info("Trainee deleted successfully. USERNAME: {}", username);
         } else {
-            logger.error("Trainee not found for USERNAME: {}", username);
+            log.error("Trainee not found for USERNAME: {}", username);
         }
     }
 

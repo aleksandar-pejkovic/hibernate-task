@@ -1,7 +1,6 @@
 package org.example.service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.example.dao.TraineeDAO;
 import org.example.model.Trainee;
 import org.example.utils.CredentialsGenerator;
@@ -13,9 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Slf4j
 public class TraineeService {
-
-    private static final Logger logger = LogManager.getLogger(TraineeService.class);
 
     private final TraineeDAO traineeDAO;
 
@@ -45,13 +43,13 @@ public class TraineeService {
         trainee.getUser().setUsername(username);
         trainee.getUser().setPassword(password);
         traineeDAO.save(trainee);
-        logger.info("Trainee created: {}", trainee);
+        log.info("Trainee created: {}", trainee);
     }
 
     @Transactional(readOnly = true)
     public Trainee getTraineeByUsername(String username) {
         Trainee trainee = traineeDAO.findByUsername(username);
-        logger.info("Retrieved Trainee by USERNAME {}: {}", username, trainee);
+        log.info("Retrieved Trainee by USERNAME {}: {}", username, trainee);
         return trainee;
     }
 
@@ -61,7 +59,7 @@ public class TraineeService {
         Trainee trainee = getTraineeByUsername(username);
         trainee.setPassword(newPassword);
         Trainee updatedTrainee = traineeDAO.update(trainee);
-        logger.info("Password updated for trainee: {}", trainee);
+        log.info("Password updated for trainee: {}", trainee);
         return updatedTrainee;
     }
 
@@ -69,7 +67,7 @@ public class TraineeService {
     public Trainee updateTrainee(Trainee trainee) {
         authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
         Trainee updatedTrainee = traineeDAO.update(trainee);
-        logger.info("Trainee updated: {}", trainee);
+        log.info("Trainee updated: {}", trainee);
         return updatedTrainee;
     }
 
@@ -78,7 +76,7 @@ public class TraineeService {
         authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
         trainee.activateAccount();
         Trainee updatedTrainee = traineeDAO.update(trainee);
-        logger.info("Activated account for trainee: {}", trainee);
+        log.info("Activated account for trainee: {}", trainee);
         return updatedTrainee;
     }
 
@@ -87,7 +85,7 @@ public class TraineeService {
         authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
         trainee.deactivateAccount();
         Trainee updatedTrainee = traineeDAO.update(trainee);
-        logger.info("Deactivated account for trainee: {}", trainee);
+        log.info("Deactivated account for trainee: {}", trainee);
         return updatedTrainee;
     }
 
@@ -100,7 +98,7 @@ public class TraineeService {
     @Transactional(readOnly = true)
     public List<Trainee> getAllTrainees() {
         List<Trainee> trainees = traineeDAO.getAllTrainees();
-        logger.info("Retrieved all Trainees: {}", trainees);
+        log.info("Retrieved all Trainees: {}", trainees);
         return trainees;
     }
 }
