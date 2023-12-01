@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class TraineeService {
 
     private static final Logger logger = LogManager.getLogger(TraineeService.class);
@@ -39,6 +38,7 @@ public class TraineeService {
         this.authentication = authentication;
     }
 
+    @Transactional
     public void createTrainee(Trainee trainee) {
         String username = generator.generateUsername(trainee.getUser());
         String password = generator.generateRandomPassword();
@@ -48,12 +48,14 @@ public class TraineeService {
         logger.info("Trainee created: {}", trainee);
     }
 
+    @Transactional(readOnly = true)
     public Trainee getTraineeByUsername(String username) {
         Trainee trainee = traineeDAO.findByUsername(username);
         logger.info("Retrieved Trainee by USERNAME {}: {}", username, trainee);
         return trainee;
     }
 
+    @Transactional
     public Trainee changePassword(String username, String oldPassword, String newPassword) {
         authentication.authenticateUser(username, oldPassword);
         Trainee trainee = getTraineeByUsername(username);
@@ -63,6 +65,7 @@ public class TraineeService {
         return updatedTrainee;
     }
 
+    @Transactional
     public Trainee updateTrainee(Trainee trainee) {
         authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
         Trainee updatedTrainee = traineeDAO.update(trainee);
@@ -70,6 +73,7 @@ public class TraineeService {
         return updatedTrainee;
     }
 
+    @Transactional
     public Trainee activateTrainee(Trainee trainee) {
         authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
         trainee.activateAccount();
@@ -78,6 +82,7 @@ public class TraineeService {
         return updatedTrainee;
     }
 
+    @Transactional
     public Trainee deactivateTrainee(Trainee trainee) {
         authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
         trainee.deactivateAccount();
@@ -86,11 +91,13 @@ public class TraineeService {
         return updatedTrainee;
     }
 
+    @Transactional
     public void deleteTrainee(String username, String password) {
         authentication.authenticateUser(username, password);
         traineeDAO.delete(username);
     }
 
+    @Transactional(readOnly = true)
     public List<Trainee> getAllTrainees() {
         List<Trainee> trainees = traineeDAO.getAllTrainees();
         logger.info("Retrieved all Trainees: {}", trainees);

@@ -39,6 +39,7 @@ public class TrainerService {
         this.authentication = authentication;
     }
 
+    @Transactional
     public void createTrainer(Trainer trainer) {
         String username = generator.generateUsername(trainer.getUser());
         String password = generator.generateRandomPassword();
@@ -48,12 +49,14 @@ public class TrainerService {
         logger.info("Trainer created: {}", trainer);
     }
 
+    @Transactional(readOnly = true)
     public Trainer getTrainerByUsername(String username) {
         Trainer trainer = trainerDAO.findByUsername(username);
         logger.info("Retrieved Trainer by USERNAME {}: {}", username, trainer);
         return trainer;
     }
 
+    @Transactional
     public Trainer changePassword(String username, String oldPassword, String newPassword) {
         authentication.authenticateUser(username, oldPassword);
         Trainer trainer = getTrainerByUsername(username);
@@ -63,12 +66,14 @@ public class TrainerService {
         return updatedTrainer;
     }
 
+    @Transactional
     public void updateTrainer(Trainer trainer) {
         authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
         trainerDAO.update(trainer);
         logger.info("Trainer updated: {}", trainer);
     }
 
+    @Transactional
     public Trainer activateTrainer(Trainer trainer) {
         authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
         trainer.activateAccount();
@@ -77,6 +82,7 @@ public class TrainerService {
         return updatedTrainer;
     }
 
+    @Transactional
     public Trainer deactivateTrainer(Trainer trainer) {
         authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
         trainer.deactivateAccount();
@@ -85,18 +91,21 @@ public class TrainerService {
         return updatedTrainer;
     }
 
+    @Transactional
     public void deleteTrainer(String username, String password) {
         authentication.authenticateUser(username, password);
         logger.info("Deleting trainer with USERNAME: {}", username);
         trainerDAO.delete(username);
     }
 
+    @Transactional(readOnly = true)
     public List<Trainer> getNotAssignedTrainerList(String traineeUsername, String password) {
         authentication.authenticateUser(traineeUsername, password);
         logger.info("Retrieving trainer list for trainee with USERNAME: {}", traineeUsername);
         return trainerDAO.getNotAssigned(traineeUsername);
     }
 
+    @Transactional(readOnly = true)
     public List<Trainer> getAllTrainers() {
         List<Trainer> trainers = trainerDAO.getAllTrainers();
         logger.info("Retrieved all Trainers: {}", trainers);

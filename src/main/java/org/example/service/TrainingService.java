@@ -1,7 +1,5 @@
 package org.example.service;
 
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.dao.TrainingDAO;
@@ -11,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
-@Transactional
 public class TrainingService {
 
     private static final Logger logger = LogManager.getLogger(TrainingService.class);
@@ -31,28 +30,33 @@ public class TrainingService {
         this.authentication = authentication;
     }
 
+    @Transactional
     public void createTraining(Training training) {
         trainingDAO.save(training);
         logger.info("Training created: {}", training);
     }
 
+    @Transactional(readOnly = true)
     public Training getTrainingById(long id) {
         Training training = trainingDAO.findById(id);
         logger.info("Retrieved Training by ID {}: {}", id, training);
         return training;
     }
 
+    @Transactional
     public Training updateTraining(Training training) {
         Training updatedTraining = trainingDAO.update(training);
         logger.info("Training updated: {}", training);
         return updatedTraining;
     }
 
+    @Transactional
     public void deleteTraining(Training training) {
         trainingDAO.delete(training);
         logger.info("Training deleted with ID: {}", training.getId());
     }
 
+    @Transactional(readOnly = true)
     public List<Training> getTraineeTrainingList(String username, String password, int trainingDuration) {
         authentication.authenticateUser(username, password);
         logger.info("Retrieving training list for trainee with USERNAME: {}", username);
@@ -61,6 +65,7 @@ public class TrainingService {
         return trainingList;
     }
 
+    @Transactional(readOnly = true)
     public List<Training> getTrainerTrainingList(String username, String password, int trainingDuration) {
         authentication.authenticateUser(username, password);
         logger.info("Retrieving training list for trainer with USERNAME: {}", username);
@@ -69,6 +74,7 @@ public class TrainingService {
         return trainingList;
     }
 
+    @Transactional(readOnly = true)
     public List<Training> getAllTrainings() {
         logger.info("Reading trainings...");
         List<Training> trainings = trainingDAO.getAllTrainings();
