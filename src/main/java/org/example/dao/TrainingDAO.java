@@ -67,7 +67,7 @@ public class TrainingDAO {
 
     public Training update(Training training) {
         Session session = sessionFactory.getCurrentSession();
-        Training updatedTraining = (Training) session.merge(training);
+        Training updatedTraining = session.merge(training);
         log.info("Training updated successfully. ID: {}", updatedTraining.getId());
         return updatedTraining;
     }
