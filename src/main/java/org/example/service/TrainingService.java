@@ -34,7 +34,8 @@ public class TrainingService {
     public void createTraining(Training training) {
         Trainee trainee = training.getTrainee();
         Trainer trainer = training.getTrainer();
-        trainee.addTrainer(trainer);
+        trainer.getTraineeList().add(trainee);
+        trainee.getTrainerList().add(trainer);
         trainingDAO.save(training);
         log.info("Training created: {}", training);
     }
@@ -57,7 +58,8 @@ public class TrainingService {
     public boolean deleteTraining(Training training) {
         Trainee trainee = training.getTrainee();
         Trainer trainer = training.getTrainer();
-        trainee.removeTrainer(trainer);
+        trainer.getTraineeList().remove(trainee);
+        trainee.getTrainerList().remove(trainer);
         boolean result = trainingDAO.delete(training);
         log.info("Training deleted with ID: {}", training.getId());
         return result;

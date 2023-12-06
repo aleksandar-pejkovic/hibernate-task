@@ -69,14 +69,4 @@ public class Trainee {
     public void deactivateAccount() {
         this.getUser().setActive(false);
     }
-
-    public void addTrainer(Trainer trainer) {
-        trainer.getTraineeList().add(this);
-        this.getTrainerList().add(trainer);
-    }
-
-    public void removeTrainer(Trainer trainer) {
-        trainer.getTraineeList().remove(this);
-        this.getTrainerList().remove(trainer);
-    }
 }
