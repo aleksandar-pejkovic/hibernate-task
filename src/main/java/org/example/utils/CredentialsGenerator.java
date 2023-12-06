@@ -1,6 +1,5 @@
 package org.example.utils;
 
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.example.model.User;
 import org.hibernate.Session;
@@ -8,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Random;
 
@@ -40,12 +40,16 @@ public class CredentialsGenerator {
 //        return password.toString();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public String generateUsername(User user) {
         log.info("Generating username...");
         String baseUsername = user.getFirstName() + "." + user.getLastName();
         long count = fetchCountForMatchingUsername(baseUsername);
-        return (count > 0) ? baseUsername + ++count : baseUsername;
+        if (count > 0) {
+            long usernameSuffix = count + 1;
+            return baseUsername + usernameSuffix;
+        }
+        return baseUsername;
     }
 
     private long fetchCountForMatchingUsername(String baseUsername) {
