@@ -44,27 +44,11 @@ public class TrainingDAO {
     }
 
     public List<Training> getTraineeTrainingList(String username, int trainingDuration) {
-        Session session = sessionFactory.getCurrentSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Training> criteria = builder.createQuery(Training.class);
-        Root<Training> root = criteria.from(Training.class);
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get("trainee").get("user").get("username"), username));
-        predicates.add(builder.greaterThan(root.get("trainingDuration"), trainingDuration));
-        criteria.select(root).where(predicates.toArray(new Predicate[]{}));
-        return session.createQuery(criteria).getResultList();
+        return getTrainingList("trainee", username, trainingDuration);
     }
 
     public List<Training> getTrainerTrainingList(String username, int trainingDuration) {
-        Session session = sessionFactory.getCurrentSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Training> criteria = builder.createQuery(Training.class);
-        Root<Training> root = criteria.from(Training.class);
-        List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get("trainer").get("user").get("username"), username));
-        predicates.add(builder.greaterThan(root.get("trainingDuration"), trainingDuration));
-        criteria.select(root).where(predicates.toArray(new Predicate[]{}));
-        return session.createQuery(criteria).getResultList();
+        return getTrainingList("trainer", username, trainingDuration);
     }
 
     public Training update(Training training) {
@@ -93,5 +77,17 @@ public class TrainingDAO {
         List<Training> trainingList = query.getResultList();
         log.info("Retrieved all trainings. Count: {}", trainingList.size());
         return trainingList;
+    }
+
+    private List<Training> getTrainingList(String entityType, String username, int trainingDuration) {
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Training> criteria = builder.createQuery(Training.class);
+        Root<Training> root = criteria.from(Training.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(builder.equal(root.get(entityType).get("user").get("username"), username));
+        predicates.add(builder.greaterThan(root.get("trainingDuration"), trainingDuration));
+        criteria.select(root).where(predicates.toArray(new Predicate[]{}));
+        return session.createQuery(criteria).getResultList();
     }
 }
