@@ -22,9 +22,11 @@ public class TraineeDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    public void save(Trainee trainee) {
+    public Trainee save(Trainee trainee) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(trainee);
+        log.info("Trainee created: {}", trainee);
+        return trainee;
     }
 
     public Trainee findByUsername(String username) {

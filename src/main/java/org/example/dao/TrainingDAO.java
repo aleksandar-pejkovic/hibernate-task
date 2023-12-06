@@ -28,10 +28,11 @@ public class TrainingDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    public void save(Training training) {
+    public Training save(Training training) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(training);
         log.info("Training saved successfully. ID: {}", training.getId());
+        return training;
     }
 
     public Training findById(long id) {

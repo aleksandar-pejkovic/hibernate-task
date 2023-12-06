@@ -11,13 +11,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
@@ -40,16 +40,11 @@ class TrainerServiceTest {
 
     private Trainer trainer;
 
-    private User user;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        trainerService = new TrainerService(trainerDAO, credentialsGenerator, authentication);
-        ReflectionTestUtils.setField(trainerService, "generator", credentialsGenerator);
-        ReflectionTestUtils.setField(trainerService, "authentication", userAuthentication);
 
-        user = User.builder()
+        User user = User.builder()
                 .isActive(true)
                 .lastName("Rossi")
                 .firstName("Valentino")
@@ -68,17 +63,17 @@ class TrainerServiceTest {
     @Test
     void createTrainer() {
         // Arrange
-        when(credentialsGenerator.generateUsername(trainer.getUser())).thenReturn("Valentino.Rossi");
+        when(credentialsGenerator.generateUsername(any())).thenReturn("Valentino.Rossi");
         when(credentialsGenerator.generateRandomPassword()).thenReturn("9876543210");
-        doNothing().when(userAuthentication).authenticateUser(eq(trainer.getUsername()), eq(trainer.getPassword()));
+        when(trainerDAO.save(any())).thenReturn(trainer);
 
         // Act
-        trainerService.createTrainer(trainer);
+        Trainer result = trainerService.createTrainer(trainer);
 
         // Assert
         verify(trainerDAO, times(1)).save(trainer);
-        assertEquals("Valentino.Rossi", trainer.getUser().getUsername());
-        assertEquals("9876543210", trainer.getUser().getPassword());
+        assertEquals("Valentino.Rossi", result.getUsername());
+        assertEquals("9876543210", result.getPassword());
     }
 
     @Test

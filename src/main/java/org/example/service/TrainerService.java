@@ -29,13 +29,12 @@ public class TrainerService {
     }
 
     @Transactional
-    public void createTrainer(Trainer trainer) {
+    public Trainer createTrainer(Trainer trainer) {
         String username = generator.generateUsername(trainer.getUser());
         String password = generator.generateRandomPassword();
-        trainer.getUser().setUsername(username);
-        trainer.getUser().setPassword(password);
-        trainerDAO.save(trainer);
-        log.info("Trainer created: {}", trainer);
+        trainer.setUsername(username);
+        trainer.setPassword(password);
+        return trainerDAO.save(trainer);
     }
 
     @Transactional(readOnly = true)

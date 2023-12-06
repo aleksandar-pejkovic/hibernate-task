@@ -7876,3 +7876,31 @@ Caused by: java.lang.IllegalStateException: Neither GenericXmlContextLoader nor 
 13:25:27.494 [main] INFO  org.example.utils.UserAuthentication - Successful user authentication
 13:25:27.494 [main] INFO  org.example.service.TrainerService - Retrieving trainer list for trainee with USERNAME: Max.Biaggi
 13:25:27.544 [main] INFO  org.example.dao.TrainerDAO - Successfully retrieved unassigned trainers list: []
+13:32:05.354 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+13:32:05.363 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+13:32:06.504 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+13:32:07.738 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+13:32:08.062 [main] INFO  org.example.facade.GymFacade - Creating trainee...
+13:32:08.128 [main] INFO  org.example.utils.CredentialsGenerator - Generating username...
+13:32:08.586 [main] INFO  org.example.utils.CredentialsGenerator - Generating password...
+13:32:08.657 [main] INFO  org.example.service.TraineeService - Trainee created: Trainee(id=1, dateOfBirth=Wed Dec 06 13:32:08 CET 2023, address=11000 Belgrade, user=User(id=1, firstName=Max, lastName=Biaggi, username=Max.Biaggi, password=1234567890, isActive=true), trainerList=null, trainingList=null)
+13:32:08.669 [main] INFO  org.example.facade.GymFacade - Reading trainees...
+13:32:08.734 [main] INFO  org.example.service.TraineeService - Retrieved all Trainees: [Trainee(id=1, dateOfBirth=2023-12-06 13:32:08.06, address=11000 Belgrade, user=User(id=1, firstName=Max, lastName=Biaggi, username=Max.Biaggi, password=1234567890, isActive=true), trainerList=[], trainingList=[])]
+13:32:08.736 [main] INFO  org.example.facade.GymFacade - Reading trainers...
+13:32:08.739 [main] INFO  org.example.dao.TrainerDAO - Retrieved all trainers. Count: 0
+13:32:08.740 [main] INFO  org.example.service.TrainerService - Retrieved all Trainers: []
+13:32:08.741 [main] INFO  org.example.service.TrainingService - Reading trainings...
+13:32:08.744 [main] INFO  org.example.dao.TrainingDAO - Retrieved all trainings. Count: 0
+13:32:08.745 [main] INFO  org.example.service.TrainingService - Retrieved all Trainings: []
+13:32:08.766 [main] INFO  org.example.utils.UserAuthentication - Successful user authentication
+13:32:08.766 [main] INFO  org.example.service.TrainingService - Retrieving training list for trainee with USERNAME: Max.Biaggi
+13:32:08.782 [main] INFO  org.example.service.TrainingService - Successfully retrieved training list: []
+13:32:08.785 [main] INFO  org.example.utils.UserAuthentication - Successful user authentication
+13:32:08.785 [main] INFO  org.example.service.TrainerService - Retrieving trainer list for trainee with USERNAME: Max.Biaggi
+13:32:08.967 [main] INFO  org.example.dao.TrainerDAO - Successfully retrieved unassigned trainers list: []
+13:36:50.016 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.8.Final
+13:36:50.022 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+13:36:51.330 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+13:36:52.467 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+13:36:52.864 [main] INFO  org.hibernate.bytecode.internal.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+13:36:52.975 [main] INFO  org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]

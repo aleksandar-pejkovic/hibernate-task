@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,17 +43,11 @@ class TrainingServiceTest {
 
     private Trainer trainer;
 
-    private User user1;
-
-    private User user2;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        trainingService = new TrainingService(trainingDAO, authentication);
-        ReflectionTestUtils.setField(trainingService, "authentication", userAuthentication);
 
-        user1 = User.builder()
+        User user1 = User.builder()
                 .isActive(true)
                 .lastName("Biaggi")
                 .firstName("Max")
@@ -62,7 +55,7 @@ class TrainingServiceTest {
                 .password("0123456789")
                 .build();
 
-        user2 = User.builder()
+        User user2 = User.builder()
                 .isActive(true)
                 .lastName("Storrari")
                 .firstName("Matteo")
@@ -95,15 +88,15 @@ class TrainingServiceTest {
     @Test
     void createTraining() {
         // Arrange
-        doNothing().when(trainingDAO).save(any(Training.class));
+        when(trainingDAO.save(any())).thenReturn(training);
 
         // Act
-        trainingService.createTraining(training);
+        Training result = trainingService.createTraining(training);
 
         // Assert
         verify(trainingDAO, times(1)).save(training);
-        assertEquals(trainee, training.getTrainee());
-        assertEquals(trainer, training.getTrainer());
+        assertEquals(trainee, result.getTrainee());
+        assertEquals(trainer, result.getTrainer());
     }
 
     @Test

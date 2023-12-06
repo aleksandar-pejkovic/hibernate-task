@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Collections;
 import java.util.Date;
@@ -18,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
@@ -40,16 +40,11 @@ class TraineeServiceTest {
 
     private Trainee trainee;
 
-    private User user;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        traineeService = new TraineeService(traineeDAO, credentialsGenerator, authentication);
-        ReflectionTestUtils.setField(traineeService, "generator", credentialsGenerator);
-        ReflectionTestUtils.setField(traineeService, "authentication", userAuthentication);
 
-        user = User.builder()
+        User user = User.builder()
                 .isActive(true)
                 .lastName("Biaggi")
                 .firstName("Max")
@@ -69,16 +64,17 @@ class TraineeServiceTest {
     @Test
     void createTrainee() {
         // Arrange
-        when(credentialsGenerator.generateUsername(trainee.getUser())).thenReturn("Max.Biaggi");
+        when(credentialsGenerator.generateUsername(any())).thenReturn("Max.Biaggi");
         when(credentialsGenerator.generateRandomPassword()).thenReturn("0123456789");
+        when(traineeDAO.save(any())).thenReturn(trainee);
 
         // Act
-        traineeService.createTrainee(trainee);
+        Trainee result = traineeService.createTrainee(trainee);
 
         // Assert
         verify(traineeDAO, times(1)).save(trainee);
-        assertEquals("Max.Biaggi", trainee.getUser().getUsername());
-        assertEquals("0123456789", trainee.getUser().getPassword());
+        assertEquals("Max.Biaggi", result.getUsername());
+        assertEquals("0123456789", result.getPassword());
     }
 
     @Test

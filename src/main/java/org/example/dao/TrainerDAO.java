@@ -22,10 +22,11 @@ public class TrainerDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    public void save(Trainer trainer) {
+    public Trainer save(Trainer trainer) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(trainer);
         log.info("Trainer saved successfully. ID: {}", trainer.getId());
+        return trainer;
     }
 
     public Trainer findByUsername(String username) {

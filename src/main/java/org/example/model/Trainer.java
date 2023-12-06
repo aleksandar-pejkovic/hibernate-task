@@ -52,6 +52,10 @@ public class Trainer {
         return this.getUser().getPassword();
     }
 
+    public void setUsername(String username) {
+        this.getUser().setUsername(username);
+    }
+
     public void setPassword(String password) {
         this.getUser().setPassword(password);
     }

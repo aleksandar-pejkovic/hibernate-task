@@ -27,13 +27,12 @@ public class TrainingService {
     }
 
     @Transactional
-    public void createTraining(Training training) {
+    public Training createTraining(Training training) {
         Trainee trainee = training.getTrainee();
         Trainer trainer = training.getTrainer();
         trainer.getTraineeList().add(trainee);
         trainee.getTrainerList().add(trainer);
-        trainingDAO.save(training);
-        log.info("Training created: {}", training);
+        return trainingDAO.save(training);
     }
 
     @Transactional(readOnly = true)
