@@ -45,7 +45,7 @@ class TraineeServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        traineeService = new TraineeService(traineeDAO);
+        traineeService = new TraineeService(traineeDAO, credentialsGenerator, authentication);
         ReflectionTestUtils.setField(traineeService, "generator", credentialsGenerator);
         ReflectionTestUtils.setField(traineeService, "authentication", userAuthentication);
 

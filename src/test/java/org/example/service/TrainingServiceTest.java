@@ -51,7 +51,7 @@ class TrainingServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        trainingService = new TrainingService(trainingDAO);
+        trainingService = new TrainingService(trainingDAO, authentication);
         ReflectionTestUtils.setField(trainingService, "authentication", userAuthentication);
 
         user1 = User.builder()

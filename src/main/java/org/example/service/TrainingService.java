@@ -18,15 +18,11 @@ public class TrainingService {
 
     private final TrainingDAO trainingDAO;
 
-    private UserAuthentication authentication;
+    private final UserAuthentication authentication;
 
     @Autowired
-    public TrainingService(TrainingDAO trainingDAO) {
+    public TrainingService(TrainingDAO trainingDAO, UserAuthentication authentication) {
         this.trainingDAO = trainingDAO;
-    }
-
-    @Autowired
-    public void setAuthentication(UserAuthentication authentication) {
         this.authentication = authentication;
     }
 

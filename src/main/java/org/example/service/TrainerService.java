@@ -17,22 +17,14 @@ public class TrainerService {
 
     private final TrainerDAO trainerDAO;
 
-    private CredentialsGenerator generator;
+    private final CredentialsGenerator generator;
 
-    private UserAuthentication authentication;
+    private final UserAuthentication authentication;
 
     @Autowired
-    public TrainerService(TrainerDAO trainerDAO) {
+    public TrainerService(TrainerDAO trainerDAO, CredentialsGenerator credentialsGenerator, UserAuthentication authentication) {
         this.trainerDAO = trainerDAO;
-    }
-
-    @Autowired
-    public void setGenerator(CredentialsGenerator credentialsGenerator) {
         this.generator = credentialsGenerator;
-    }
-
-    @Autowired
-    public void setAuthentication(UserAuthentication authentication) {
         this.authentication = authentication;
     }
 

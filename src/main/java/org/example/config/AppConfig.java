@@ -35,17 +35,17 @@ public class AppConfig {
 
     @Bean
     public TraineeService traineeService(TraineeDAO traineeDAO) {
-        return new TraineeService(traineeDAO);
+        return new TraineeService(traineeDAO, credentialsGenerator, authentication);
     }
 
     @Bean
     public TrainerService trainerService(TrainerDAO trainerDAO) {
-        return new TrainerService(trainerDAO);
+        return new TrainerService(trainerDAO, credentialsGenerator, authentication);
     }
 
     @Bean
     public TrainingService trainingService(TrainingDAO trainingDAO) {
-        return new TrainingService(trainingDAO);
+        return new TrainingService(trainingDAO, authentication);
     }
 
     @Bean
