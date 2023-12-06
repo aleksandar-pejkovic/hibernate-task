@@ -62,11 +62,12 @@ public class TrainerDAO {
     public List<Trainer> getNotAssigned(String traineeUsername) {
         Session session = sessionFactory.getCurrentSession();
 
-        String hql = "SELECT t FROM Trainer t WHERE t.id NOT IN " +
-                "(SELECT tr.id FROM Trainee te JOIN te.trainerList tr WHERE te.user.username = :username)";
+        String hql = "SELECT t FROM Trainer t "
+                + "LEFT JOIN t.traineeList te "
+                + "WHERE te IS NULL OR te.user.username = :traineeUsername";
 
         Query<Trainer> query = session.createQuery(hql, Trainer.class);
-        query.setParameter("username", traineeUsername);
+        query.setParameter("traineeUsername", traineeUsername);
 
         List<Trainer> trainerList = query.getResultList();
         log.info("Successfully retrieved unassigned trainers list: {}", trainerList);
