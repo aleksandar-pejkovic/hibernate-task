@@ -1,5 +1,19 @@
 package org.example.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import org.example.dao.TrainingDAO;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
@@ -11,20 +25,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 class TrainingServiceTest {
 
@@ -44,45 +44,45 @@ class TrainingServiceTest {
     private Trainer trainer;
 
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    void setUp() throws Exception {
+        try (AutoCloseable autoCloseable = MockitoAnnotations.openMocks(this)) {
+            User user1 = User.builder()
+                    .isActive(true)
+                    .lastName("Biaggi")
+                    .firstName("Max")
+                    .username("Max.Biaggi")
+                    .password("0123456789")
+                    .build();
 
-        User user1 = User.builder()
-                .isActive(true)
-                .lastName("Biaggi")
-                .firstName("Max")
-                .username("Max.Biaggi")
-                .password("0123456789")
-                .build();
+            User user2 = User.builder()
+                    .isActive(true)
+                    .lastName("Storrari")
+                    .firstName("Matteo")
+                    .username("Matteo.Storrari")
+                    .password("0123456789")
+                    .build();
 
-        User user2 = User.builder()
-                .isActive(true)
-                .lastName("Storrari")
-                .firstName("Matteo")
-                .username("Matteo.Storrari")
-                .password("0123456789")
-                .build();
+            trainee = Trainee.builder()
+                    .user(user1)
+                    .address("11000 Belgrade")
+                    .dateOfBirth(new Date())
+                    .trainerList(new ArrayList<>())
+                    .trainingList(new ArrayList<>())
+                    .build();
 
-        trainee = Trainee.builder()
-                .user(user1)
-                .address("11000 Belgrade")
-                .dateOfBirth(new Date())
-                .trainerList(new ArrayList<>())
-                .trainingList(new ArrayList<>())
-                .build();
+            trainer = Trainer.builder()
+                    .user(user2)
+                    .traineeList(new ArrayList<>())
+                    .trainingList(new ArrayList<>())
+                    .build();
 
-        trainer = Trainer.builder()
-                .user(user2)
-                .traineeList(new ArrayList<>())
-                .trainingList(new ArrayList<>())
-                .build();
+            training = new Training();
+            training.setId(1L);
+            training.setTrainee(trainee);
+            training.setTrainer(trainer);
 
-        training = new Training();
-        training.setId(1L);
-        training.setTrainee(trainee);
-        training.setTrainer(trainer);
-
-        doNothing().when(userAuthentication).authenticateUser(eq(trainee.getUsername()), eq(trainee.getPassword()));
+            doNothing().when(userAuthentication).authenticateUser(eq(trainee.getUsername()), eq(trainee.getPassword()));
+        }
     }
 
     @Test

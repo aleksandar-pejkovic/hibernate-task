@@ -1,5 +1,17 @@
 package org.example.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.example.dao.TrainerDAO;
 import org.example.model.Trainer;
 import org.example.model.TrainingType;
@@ -11,18 +23,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 class TrainerServiceTest {
 
@@ -41,23 +41,23 @@ class TrainerServiceTest {
     private Trainer trainer;
 
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    void setUp() throws Exception {
+        try (AutoCloseable autoCloseable = MockitoAnnotations.openMocks(this)) {
+            User user = User.builder()
+                    .isActive(true)
+                    .lastName("Rossi")
+                    .firstName("Valentino")
+                    .username("Valentino.Rossi")
+                    .password("9876543210")
+                    .build();
 
-        User user = User.builder()
-                .isActive(true)
-                .lastName("Rossi")
-                .firstName("Valentino")
-                .username("Valentino.Rossi")
-                .password("9876543210")
-                .build();
+            trainer = Trainer.builder()
+                    .user(user)
+                    .specialization(new TrainingType())
+                    .build();
 
-        trainer = Trainer.builder()
-                .user(user)
-                .specialization(new TrainingType())
-                .build();
-
-        doNothing().when(userAuthentication).authenticateUser(eq(trainer.getUsername()), eq(trainer.getPassword()));
+            doNothing().when(userAuthentication).authenticateUser(eq(trainer.getUsername()), eq(trainer.getPassword()));
+        }
     }
 
     @Test

@@ -1,5 +1,18 @@
 package org.example.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import org.example.dao.TraineeDAO;
 import org.example.model.Trainee;
 import org.example.model.User;
@@ -10,19 +23,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 class TraineeServiceTest {
 
@@ -41,24 +41,24 @@ class TraineeServiceTest {
     private Trainee trainee;
 
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    void setUp() throws Exception {
+        try (AutoCloseable autoCloseable = MockitoAnnotations.openMocks(this)) {
+            User user = User.builder()
+                    .isActive(true)
+                    .lastName("Biaggi")
+                    .firstName("Max")
+                    .username("Max.Biaggi")
+                    .password("0123456789")
+                    .build();
 
-        User user = User.builder()
-                .isActive(true)
-                .lastName("Biaggi")
-                .firstName("Max")
-                .username("Max.Biaggi")
-                .password("0123456789")
-                .build();
+            trainee = Trainee.builder()
+                    .user(user)
+                    .address("11000 Belgrade")
+                    .dateOfBirth(new Date())
+                    .build();
 
-        trainee = Trainee.builder()
-                .user(user)
-                .address("11000 Belgrade")
-                .dateOfBirth(new Date())
-                .build();
-
-        doNothing().when(userAuthentication).authenticateUser(eq(trainee.getUsername()), eq(trainee.getPassword()));
+            doNothing().when(userAuthentication).authenticateUser(eq(trainee.getUsername()), eq(trainee.getPassword()));
+        }
     }
 
     @Test
