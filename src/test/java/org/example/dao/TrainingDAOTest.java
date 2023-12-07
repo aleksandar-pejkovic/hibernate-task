@@ -1,29 +1,5 @@
 package org.example.dao;
 
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Path;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import org.example.model.Trainee;
-import org.example.model.Trainer;
-import org.example.model.Training;
-import org.example.model.TrainingType;
-import org.example.model.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.hibernate.query.criteria.HibernateCriteriaBuilder;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.util.Collections;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,6 +12,27 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.example.model.Training;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.hibernate.query.criteria.HibernateCriteriaBuilder;
+import org.hibernate.query.criteria.JpaCriteriaQuery;
+import org.hibernate.query.criteria.JpaPath;
+import org.hibernate.query.criteria.JpaRoot;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Predicate;
 
 class TrainingDAOTest {
 
@@ -85,92 +82,69 @@ class TrainingDAOTest {
         assertEquals(training, foundTraining);
     }
 
-/*
     @Test
     void getTraineeTrainingList() {
         // Arrange
-        CriteriaBuilder criteriaBuilder = mock(CriteriaBuilder.class);
-        CriteriaQuery<Training> criteriaQuery = mock(CriteriaQuery.class);
+        HibernateCriteriaBuilder criteriaBuilder = mock(HibernateCriteriaBuilder.class);
+        JpaCriteriaQuery<Training> criteriaQuery = mock(JpaCriteriaQuery.class);
+        JpaRoot<Training> root = mock(JpaRoot.class);
+        JpaPath<Object> traineePath = mock(JpaPath.class);
+        JpaPath<Object> userPath = mock(JpaPath.class);
+        JpaPath<Object> usernamePath = mock(JpaPath.class);
         Query<Training> query = mock(Query.class);
-        Root<Training> root = mock(Root.class);
-        List<Predicate> predicates = mock(List.class);
-        Predicate predicate = mock(Predicate.class);
-        Path<?> path = mock(Path.class);
 
-        User user = User.builder()
-                .isActive(true)
-                .lastName("Biaggi")
-                .firstName("Max")
-                .username("Max.Biaggi")
-                .password("0123456789")
-                .build();
+        List<Predicate> predicates = new ArrayList<>();
+        List<Training> expectedResult = Collections.singletonList(training);
 
-        Trainee trainee = Trainee.builder()
-                .address("11000 Belgrade")
-                .dateOfBirth(new java.util.Date())
-                .user(user)
-                .build();
-
-        when(sessionFactory.getCriteriaBuilder()).thenReturn((HibernateCriteriaBuilder) criteriaBuilder);
+        when(session.getCriteriaBuilder()).thenReturn(criteriaBuilder);
         when(criteriaBuilder.createQuery(Training.class)).thenReturn(criteriaQuery);
         when(criteriaQuery.from(Training.class)).thenReturn(root);
-        when(criteriaQuery.select(root)).thenReturn(criteriaQuery);
-        when(criteriaQuery.where(any(Predicate.class))).thenReturn(criteriaQuery);
+        when(root.get("trainee")).thenReturn(traineePath);
+        when(traineePath.get("user")).thenReturn(userPath);
+        when(userPath.get("username")).thenReturn(usernamePath);
+        when(criteriaQuery.select(any())).thenReturn(criteriaQuery);
+        when(criteriaQuery.where(predicates.toArray(new Predicate[]{}))).thenReturn(criteriaQuery);
         when(session.createQuery(criteriaQuery)).thenReturn(query);
-        when(query.getResultList()).thenReturn(Collections.singletonList(training));
-        when(predicates.add(any())).thenReturn(true);
+        when(query.getResultList()).thenReturn(expectedResult);
 
         // Act
-        List<Training> trainings = trainingDAO.getTraineeTrainingList("username", 5);
+        List<Training> actualResult = trainingDAO.getTraineeTrainingList("Max.Biaggi", 5);
 
         // Assert
-        assertEquals(1, trainings.size());
-        assertEquals(training, trainings.get(0));
+        assertEquals(expectedResult, actualResult);
     }
 
     @Test
-    void getTraineRTrainingListTest() {
+    void getTrainerTrainingListTest() {
         // Arrange
-        CriteriaBuilder criteriaBuilder = mock(CriteriaBuilder.class);
-        CriteriaQuery<Training> criteriaQuery = mock(CriteriaQuery.class);
+        HibernateCriteriaBuilder criteriaBuilder = mock(HibernateCriteriaBuilder.class);
+        JpaCriteriaQuery<Training> criteriaQuery = mock(JpaCriteriaQuery.class);
+        JpaRoot<Training> root = mock(JpaRoot.class);
+        JpaPath<Object> trainerPath = mock(JpaPath.class);
+        JpaPath<Object> userPath = mock(JpaPath.class);
+        JpaPath<Object> usernamePath = mock(JpaPath.class);
         Query<Training> query = mock(Query.class);
-        Root<Training> root = mock(Root.class);
-        List<Predicate> predicates = mock(List.class);
-        Predicate predicate = mock(Predicate.class);
-        Path<?> path = mock(Path.class);
 
-        User user = User.builder()
-                .isActive(true)
-                .lastName("Biaggi")
-                .firstName("Max")
-                .username("Max.Biaggi")
-                .password("0123456789")
-                .build();
+        List<Predicate> predicates = new ArrayList<>();
+        List<Training> expectedResult = Collections.singletonList(training);
 
-        Trainer trainer = Trainer.builder()
-                .specialization(TrainingType.builder()
-                        .trainingTypeName("Cardio")
-                        .build())
-                .user(user)
-                .build();
-
-        when(sessionFactory.getCriteriaBuilder()).thenReturn((HibernateCriteriaBuilder) criteriaBuilder);
+        when(session.getCriteriaBuilder()).thenReturn(criteriaBuilder);
         when(criteriaBuilder.createQuery(Training.class)).thenReturn(criteriaQuery);
         when(criteriaQuery.from(Training.class)).thenReturn(root);
-        when(criteriaQuery.select(root)).thenReturn(criteriaQuery);
-        when(criteriaQuery.where(any(Predicate.class))).thenReturn(criteriaQuery);
+        when(root.get("trainer")).thenReturn(trainerPath);
+        when(trainerPath.get("user")).thenReturn(userPath);
+        when(userPath.get("username")).thenReturn(usernamePath);
+        when(criteriaQuery.select(any())).thenReturn(criteriaQuery);
+        when(criteriaQuery.where(predicates.toArray(new Predicate[]{}))).thenReturn(criteriaQuery);
         when(session.createQuery(criteriaQuery)).thenReturn(query);
-        when(query.getResultList()).thenReturn(Collections.singletonList(training));
-        when(predicates.add(any())).thenReturn(true);
+        when(query.getResultList()).thenReturn(expectedResult);
 
         // Act
-        List<Training> trainings = trainingDAO.getTrainerTrainingList("username", 5);
+        List<Training> actualResult = trainingDAO.getTrainerTrainingList("Max.Biaggi", 5);
 
         // Assert
-        assertEquals(1, trainings.size());
-        assertEquals(training, trainings.get(0));
+        assertEquals(expectedResult, actualResult);
     }
-*/
 
     @Test
     void updateTraining() {

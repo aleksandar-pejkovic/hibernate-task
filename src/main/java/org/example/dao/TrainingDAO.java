@@ -1,11 +1,9 @@
 package org.example.dao;
 
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.example.model.Training;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,9 +11,12 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
@@ -82,13 +83,13 @@ public class TrainingDAO {
 
     private List<Training> getTrainingList(String entityType, String username, int trainingDuration) {
         Session session = sessionFactory.getCurrentSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Training> criteria = builder.createQuery(Training.class);
-        Root<Training> root = criteria.from(Training.class);
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Training> criteriaQuery = criteriaBuilder.createQuery(Training.class);
+        Root<Training> root = criteriaQuery.from(Training.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(builder.equal(root.get(entityType).get("user").get("username"), username));
-        predicates.add(builder.greaterThan(root.get("trainingDuration"), trainingDuration));
-        criteria.select(root).where(predicates.toArray(new Predicate[]{}));
-        return session.createQuery(criteria).getResultList();
+        predicates.add(criteriaBuilder.equal(root.get(entityType).get("user").get("username"), username));
+        predicates.add(criteriaBuilder.greaterThan(root.get("trainingDuration"), trainingDuration));
+        criteriaQuery.select(root).where(predicates.toArray(new Predicate[]{}));
+        return session.createQuery(criteriaQuery).getResultList();
     }
 }
