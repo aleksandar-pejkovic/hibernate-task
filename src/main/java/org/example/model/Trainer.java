@@ -24,7 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
-public class Trainer {
+public class Trainer implements AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

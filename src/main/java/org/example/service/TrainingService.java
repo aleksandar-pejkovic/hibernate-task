@@ -32,7 +32,7 @@ public class TrainingService {
         Trainer trainer = training.getTrainer();
         trainer.getTraineeList().add(trainee);
         trainee.getTrainerList().add(trainer);
-        return trainingDAO.save(training);
+        return trainingDAO.saveTraining(training);
     }
 
     @Transactional(readOnly = true)
@@ -44,7 +44,7 @@ public class TrainingService {
 
     @Transactional
     public Training updateTraining(Training training) {
-        Training updatedTraining = trainingDAO.update(training);
+        Training updatedTraining = trainingDAO.updateTraining(training);
         log.info("Training updated: {}", training);
         return updatedTraining;
     }

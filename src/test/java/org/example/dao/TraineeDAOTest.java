@@ -1,19 +1,5 @@
 package org.example.dao;
 
-import org.example.model.Trainee;
-import org.example.model.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.util.Collections;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,6 +13,20 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.example.model.Trainee;
+import org.example.model.User;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 class TraineeDAOTest {
 
     @Mock
@@ -38,13 +38,13 @@ class TraineeDAOTest {
     @InjectMocks
     private TraineeDAO traineeDAO;
 
-    private Trainee trainee;
+    private Trainee testTrainee;
 
     @BeforeEach
     void setUp() throws Exception {
         try (AutoCloseable autoCloseable = MockitoAnnotations.openMocks(this)) {
             when(sessionFactory.getCurrentSession()).thenReturn(session);
-            trainee = Trainee.builder()
+            testTrainee = Trainee.builder()
                     .address("11000 Belgrade")
                     .dateOfBirth(new java.util.Date())
                     .user(User.builder()
@@ -61,31 +61,29 @@ class TraineeDAOTest {
     @Test
     void saveTrainee() {
         // Arrange
-        doNothing().when(session).persist(eq(trainee));
+        doNothing().when(session).persist(eq(testTrainee));
 
         // Act
-        Trainee savedTrainee = traineeDAO.save(trainee);
+        Trainee savedTrainee = traineeDAO.saveTrainee(testTrainee);
 
         // Assert
-        assertEquals(trainee.getUsername(), savedTrainee.getUsername());
-        assertEquals(trainee.getUser().getFirstName(), savedTrainee.getUser().getFirstName());
-        verify(session, times(1)).persist(trainee);
+        assertEquals(testTrainee.getUsername(), savedTrainee.getUsername());
+        assertEquals(testTrainee.getUser().getFirstName(), savedTrainee.getUser().getFirstName());
+        verify(session, times(1)).persist(testTrainee);
     }
 
     @Test
     void findTraineeByUsername() {
         // Arrange
-        Query<Trainee> query;
-        query = mock(Query.class);
+        Query<Trainee> query = mock(Query.class);
         when(session.createQuery(anyString(), eq(Trainee.class))).thenReturn(query);
-        when(query.setParameter(eq("username"), anyString())).thenReturn(query);
-        when(query.getSingleResult()).thenReturn(trainee);
+        when(query.getSingleResult()).thenReturn(testTrainee);
 
         // Act
         Trainee foundTrainee = traineeDAO.findByUsername("Max.Biaggi");
 
         // Assert
-        assertEquals(trainee, foundTrainee);
+        assertEquals(testTrainee, foundTrainee);
         verify(session, times(1)).createQuery(anyString(), eq(Trainee.class));
         verify(query, times(1)).setParameter(eq("username"), anyString());
         verify(query, times(1)).getSingleResult();
@@ -94,14 +92,21 @@ class TraineeDAOTest {
     @Test
     void updateTrainee() {
         // Arrange
-        when(session.merge(trainee)).thenReturn(trainee);
+        Trainee traineeBeforeUpdate = testTrainee;
+        Trainee traineeAfterUpdate = Trainee.builder()
+                .address("18000 Nis")
+                .dateOfBirth(testTrainee.getDateOfBirth())
+                .user(testTrainee.getUser())
+                .build();
+
+        when(session.merge(traineeBeforeUpdate)).thenReturn(traineeAfterUpdate);
 
         // Act
-        Trainee updatedTrainee = traineeDAO.update(trainee);
+        Trainee resultTrainee = traineeDAO.updateTrainee(traineeBeforeUpdate);
 
         // Assert
-        assertEquals(trainee, updatedTrainee);
-        verify(session, times(1)).merge(trainee);
+        assertEquals(traineeAfterUpdate, resultTrainee);
+        verify(session, times(1)).merge(traineeBeforeUpdate);
     }
 
     @Test
@@ -114,7 +119,7 @@ class TraineeDAOTest {
         when(query.uniqueResult()).thenReturn(1L);
 
         // Act
-        boolean result = traineeDAO.delete("Max.Biaggi");
+        boolean result = traineeDAO.deleteByUsername("Max.Biaggi");
 
         // Assert
         assertTrue(result);
@@ -134,7 +139,7 @@ class TraineeDAOTest {
         when(query.uniqueResult()).thenReturn(null);
 
         // Act
-        boolean result = traineeDAO.delete("NonExistentUser");
+        boolean result = traineeDAO.deleteByUsername("NonExistentUser");
 
         // Assert
         assertFalse(result);
@@ -150,15 +155,15 @@ class TraineeDAOTest {
         Query<Trainee> query;
         query = mock(Query.class);
         when(session.createQuery(anyString(), eq(Trainee.class))).thenReturn(query);
-        when(query.list()).thenReturn(Collections.singletonList(trainee));
+        when(query.getResultList()).thenReturn(Collections.singletonList(testTrainee));
 
         // Act
         List<Trainee> trainees = traineeDAO.getAllTrainees();
 
         // Assert
         assertEquals(1, trainees.size());
-        assertEquals(trainee, trainees.get(0));
+        assertEquals(testTrainee, trainees.get(0));
         verify(session, times(1)).createQuery(anyString(), eq(Trainee.class));
-        verify(query, times(1)).list();
+        verify(query, times(1)).getResultList();
     }
 }

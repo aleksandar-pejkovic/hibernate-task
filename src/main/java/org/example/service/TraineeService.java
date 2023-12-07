@@ -1,6 +1,7 @@
 package org.example.service;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.example.dao.TraineeDAO;
 import org.example.model.Trainee;
 import org.example.utils.CredentialsGenerator;
@@ -9,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -34,7 +35,7 @@ public class TraineeService {
         String password = generator.generateRandomPassword();
         trainee.setUsername(username);
         trainee.setPassword(password);
-        return traineeDAO.save(trainee);
+        return traineeDAO.saveTrainee(trainee);
     }
 
     @Transactional(readOnly = true)
@@ -49,7 +50,7 @@ public class TraineeService {
         authentication.authenticateUser(username, oldPassword);
         Trainee trainee = getTraineeByUsername(username);
         trainee.setPassword(newPassword);
-        Trainee updatedTrainee = traineeDAO.update(trainee);
+        Trainee updatedTrainee = traineeDAO.updateTrainee(trainee);
         log.info("Password updated for trainee: {}", trainee);
         return updatedTrainee;
     }
@@ -57,7 +58,7 @@ public class TraineeService {
     @Transactional
     public Trainee updateTrainee(Trainee trainee) {
         authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
-        Trainee updatedTrainee = traineeDAO.update(trainee);
+        Trainee updatedTrainee = traineeDAO.updateTrainee(trainee);
         log.info("Trainee updated: {}", trainee);
         return updatedTrainee;
     }
@@ -66,7 +67,7 @@ public class TraineeService {
     public Trainee activateTrainee(Trainee trainee) {
         authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
         trainee.activateAccount();
-        Trainee updatedTrainee = traineeDAO.update(trainee);
+        Trainee updatedTrainee = traineeDAO.updateTrainee(trainee);
         log.info("Activated account for trainee: {}", trainee);
         return updatedTrainee;
     }
@@ -75,7 +76,7 @@ public class TraineeService {
     public Trainee deactivateTrainee(Trainee trainee) {
         authentication.authenticateUser(trainee.getUsername(), trainee.getPassword());
         trainee.deactivateAccount();
-        Trainee updatedTrainee = traineeDAO.update(trainee);
+        Trainee updatedTrainee = traineeDAO.updateTrainee(trainee);
         log.info("Deactivated account for trainee: {}", trainee);
         return updatedTrainee;
     }
@@ -83,7 +84,7 @@ public class TraineeService {
     @Transactional
     public boolean deleteTrainee(String username, String password) {
         authentication.authenticateUser(username, password);
-        return traineeDAO.delete(username);
+        return traineeDAO.deleteByUsername(username);
     }
 
     @Transactional(readOnly = true)

@@ -66,13 +66,13 @@ class TraineeServiceTest {
         // Arrange
         when(credentialsGenerator.generateUsername(any())).thenReturn("Max.Biaggi");
         when(credentialsGenerator.generateRandomPassword()).thenReturn("0123456789");
-        when(traineeDAO.save(any())).thenReturn(trainee);
+        when(traineeDAO.saveTrainee(any())).thenReturn(trainee);
 
         // Act
         Trainee result = traineeService.createTrainee(trainee);
 
         // Assert
-        verify(traineeDAO, times(1)).save(trainee);
+        verify(traineeDAO, times(1)).saveTrainee(trainee);
         assertEquals("Max.Biaggi", result.getUsername());
         assertEquals("0123456789", result.getPassword());
     }
@@ -100,55 +100,55 @@ class TraineeServiceTest {
         String newPassword = "newPassword";
 
         when(traineeService.getTraineeByUsername(username)).thenReturn(trainee);
-        when(traineeDAO.update(trainee)).thenReturn(trainee);
+        when(traineeDAO.updateTrainee(trainee)).thenReturn(trainee);
 
         // Act
         Trainee result = traineeService.changePassword(username, oldPassword, newPassword);
 
         // Assert
         verify(userAuthentication, times(1)).authenticateUser(username, oldPassword);
-        verify(traineeDAO, times(1)).update(trainee);
+        verify(traineeDAO, times(1)).updateTrainee(trainee);
         assertEquals(newPassword, result.getPassword());
     }
 
     @Test
     void updateTrainee() {
         // Arrange
-        when(traineeDAO.update(trainee)).thenReturn(trainee);
+        when(traineeDAO.updateTrainee(trainee)).thenReturn(trainee);
 
         // Act
         Trainee result = traineeService.updateTrainee(trainee);
 
         // Assert
         verify(userAuthentication, times(1)).authenticateUser(trainee.getUsername(), trainee.getPassword());
-        verify(traineeDAO, times(1)).update(trainee);
+        verify(traineeDAO, times(1)).updateTrainee(trainee);
         assertEquals(trainee, result);
     }
 
     @Test
     void activateTrainee() {
         // Arrange
-        when(traineeDAO.update(trainee)).thenReturn(trainee);
+        when(traineeDAO.updateTrainee(trainee)).thenReturn(trainee);
 
         // Act
         Trainee result = traineeService.activateTrainee(trainee);
 
         // Assert
         verify(userAuthentication, times(1)).authenticateUser(trainee.getUsername(), trainee.getPassword());
-        verify(traineeDAO, times(1)).update(trainee);
+        verify(traineeDAO, times(1)).updateTrainee(trainee);
     }
 
     @Test
     void deactivateTrainee() {
         // Arrange
-        when(traineeDAO.update(trainee)).thenReturn(trainee);
+        when(traineeDAO.updateTrainee(trainee)).thenReturn(trainee);
 
         // Act
         Trainee result = traineeService.deactivateTrainee(trainee);
 
         // Assert
         verify(userAuthentication, times(1)).authenticateUser(trainee.getUsername(), trainee.getPassword());
-        verify(traineeDAO, times(1)).update(trainee);
+        verify(traineeDAO, times(1)).updateTrainee(trainee);
     }
 
     @Test
@@ -156,14 +156,14 @@ class TraineeServiceTest {
         // Arrange
         String username = "testUser";
         String password = "testPassword";
-        when(traineeDAO.delete(username)).thenReturn(true);
+        when(traineeDAO.deleteByUsername(username)).thenReturn(true);
 
         // Act
         boolean result = traineeService.deleteTrainee(username, password);
 
         // Assert
         verify(userAuthentication, times(1)).authenticateUser(username, password);
-        verify(traineeDAO, times(1)).delete(username);
+        verify(traineeDAO, times(1)).deleteByUsername(username);
         assertTrue(result);
     }
 

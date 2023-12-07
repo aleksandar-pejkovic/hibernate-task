@@ -1,6 +1,8 @@
 package org.example.dao;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.Optional;
+
 import org.example.model.Trainer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,25 +10,19 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class TrainerDAO {
-
-    private final SessionFactory sessionFactory;
+public class TrainerDAO extends AbstractDAO {
 
     @Autowired
     public TrainerDAO(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+        super(sessionFactory);
     }
 
-    public Trainer save(Trainer trainer) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(trainer);
-        log.info("Trainer saved successfully. ID: {}", trainer.getId());
-        return trainer;
+    public Trainer saveTrainer(Trainer trainer) {
+        return (Trainer) save(trainer);
     }
 
     public Trainer findByUsername(String username) {
@@ -36,14 +32,13 @@ public class TrainerDAO {
         return query.getSingleResult();
     }
 
-    public Trainer update(Trainer trainer) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.merge(trainer);
+    public Trainer updateTrainer(Trainer trainer) {
+        return (Trainer) update(trainer);
     }
 
     public boolean delete(String username) {
         Session session = sessionFactory.getCurrentSession();
-        Query<Long> subQuery = session.createQuery("SELECT t.id FROM Trainer t WHERE t.user.username = :username",
+        Query<Long> subQuery = session.createQuery("DELETE FROM Trainer t WHERE t.user.username = :username",
                 Long.class);
         subQuery.setParameter("username", username);
 
@@ -76,10 +71,6 @@ public class TrainerDAO {
     }
 
     public List<Trainer> getAllTrainers() {
-        Session session = sessionFactory.getCurrentSession();
-        Query<Trainer> query = session.createQuery("FROM Trainer", Trainer.class);
-        List<Trainer> trainerList = query.list();
-        log.info("Retrieved all trainers. Count: {}", trainerList.size());
-        return trainerList;
+        return (List<Trainer>) findAll(Trainer.class);
     }
 }

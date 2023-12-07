@@ -19,7 +19,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @Builder
-public class Training {
+public class Training implements AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

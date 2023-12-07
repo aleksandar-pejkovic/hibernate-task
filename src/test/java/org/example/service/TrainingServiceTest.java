@@ -88,13 +88,13 @@ class TrainingServiceTest {
     @Test
     void createTraining() {
         // Arrange
-        when(trainingDAO.save(any())).thenReturn(training);
+        when(trainingDAO.saveTraining(any())).thenReturn(training);
 
         // Act
         Training result = trainingService.createTraining(training);
 
         // Assert
-        verify(trainingDAO, times(1)).save(training);
+        verify(trainingDAO, times(1)).saveTraining(training);
         assertEquals(trainee, result.getTrainee());
         assertEquals(trainer, result.getTrainer());
     }
@@ -115,13 +115,13 @@ class TrainingServiceTest {
     @Test
     void updateTraining() {
         // Arrange
-        when(trainingDAO.update(training)).thenReturn(training);
+        when(trainingDAO.updateTraining(training)).thenReturn(training);
 
         // Act
         Training result = trainingService.updateTraining(training);
 
         // Assert
-        verify(trainingDAO, times(1)).update(training);
+        verify(trainingDAO, times(1)).updateTraining(training);
         assertEquals(training, result);
     }
 

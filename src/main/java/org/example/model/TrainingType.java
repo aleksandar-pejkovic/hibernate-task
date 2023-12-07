@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
-public class TrainingType {
+public class TrainingType implements AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

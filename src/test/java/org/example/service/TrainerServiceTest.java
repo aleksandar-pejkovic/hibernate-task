@@ -65,13 +65,13 @@ class TrainerServiceTest {
         // Arrange
         when(credentialsGenerator.generateUsername(any())).thenReturn("Valentino.Rossi");
         when(credentialsGenerator.generateRandomPassword()).thenReturn("9876543210");
-        when(trainerDAO.save(any())).thenReturn(trainer);
+        when(trainerDAO.saveTrainer(any())).thenReturn(trainer);
 
         // Act
         Trainer result = trainerService.createTrainer(trainer);
 
         // Assert
-        verify(trainerDAO, times(1)).save(trainer);
+        verify(trainerDAO, times(1)).saveTrainer(trainer);
         assertEquals("Valentino.Rossi", result.getUsername());
         assertEquals("9876543210", result.getPassword());
     }
@@ -99,54 +99,54 @@ class TrainerServiceTest {
         String newPassword = "newPassword";
 
         when(trainerService.getTrainerByUsername(username)).thenReturn(trainer);
-        when(trainerDAO.update(trainer)).thenReturn(trainer);
+        when(trainerDAO.updateTrainer(trainer)).thenReturn(trainer);
 
         // Act
         Trainer result = trainerService.changePassword(username, oldPassword, newPassword);
 
         // Assert
         verify(userAuthentication, times(1)).authenticateUser(username, oldPassword);
-        verify(trainerDAO, times(1)).update(trainer);
+        verify(trainerDAO, times(1)).updateTrainer(trainer);
         assertEquals(newPassword, result.getPassword());
     }
 
     @Test
     void updateTrainer() {
         // Arrange
-        when(trainerDAO.update(trainer)).thenReturn(trainer);
+        when(trainerDAO.updateTrainer(trainer)).thenReturn(trainer);
 
         // Act
         trainerService.updateTrainer(trainer);
 
         // Assert
         verify(userAuthentication, times(1)).authenticateUser(trainer.getUsername(), trainer.getPassword());
-        verify(trainerDAO, times(1)).update(trainer);
+        verify(trainerDAO, times(1)).updateTrainer(trainer);
     }
 
     @Test
     void activateTrainer() {
         // Arrange
-        when(trainerDAO.update(trainer)).thenReturn(trainer);
+        when(trainerDAO.updateTrainer(trainer)).thenReturn(trainer);
 
         // Act
         Trainer result = trainerService.activateTrainer(trainer);
 
         // Assert
         verify(userAuthentication, times(1)).authenticateUser(trainer.getUsername(), trainer.getPassword());
-        verify(trainerDAO, times(1)).update(trainer);
+        verify(trainerDAO, times(1)).updateTrainer(trainer);
     }
 
     @Test
     void deactivateTrainer() {
         // Arrange
-        when(trainerDAO.update(trainer)).thenReturn(trainer);
+        when(trainerDAO.updateTrainer(trainer)).thenReturn(trainer);
 
         // Act
         Trainer result = trainerService.deactivateTrainer(trainer);
 
         // Assert
         verify(userAuthentication, times(1)).authenticateUser(trainer.getUsername(), trainer.getPassword());
-        verify(trainerDAO, times(1)).update(trainer);
+        verify(trainerDAO, times(1)).updateTrainer(trainer);
     }
 
     @Test

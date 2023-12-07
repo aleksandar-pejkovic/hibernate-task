@@ -1,6 +1,7 @@
 package org.example.service;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.example.dao.TrainerDAO;
 import org.example.model.Trainer;
 import org.example.utils.CredentialsGenerator;
@@ -9,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -34,7 +35,7 @@ public class TrainerService {
         String password = generator.generateRandomPassword();
         trainer.setUsername(username);
         trainer.setPassword(password);
-        return trainerDAO.save(trainer);
+        return trainerDAO.saveTrainer(trainer);
     }
 
     @Transactional(readOnly = true)
@@ -49,7 +50,7 @@ public class TrainerService {
         authentication.authenticateUser(username, oldPassword);
         Trainer trainer = getTrainerByUsername(username);
         trainer.setPassword(newPassword);
-        Trainer updatedTrainer = trainerDAO.update(trainer);
+        Trainer updatedTrainer = trainerDAO.updateTrainer(trainer);
         log.info("Password updated for trainer: {}", trainer);
         return updatedTrainer;
     }
@@ -57,7 +58,7 @@ public class TrainerService {
     @Transactional
     public void updateTrainer(Trainer trainer) {
         authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
-        trainerDAO.update(trainer);
+        trainerDAO.updateTrainer(trainer);
         log.info("Trainer updated: {}", trainer);
     }
 
@@ -65,7 +66,7 @@ public class TrainerService {
     public Trainer activateTrainer(Trainer trainer) {
         authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
         trainer.activateAccount();
-        Trainer updatedTrainer = trainerDAO.update(trainer);
+        Trainer updatedTrainer = trainerDAO.updateTrainer(trainer);
         log.info("Activated account for trainer: {}", trainer);
         return updatedTrainer;
     }
@@ -74,7 +75,7 @@ public class TrainerService {
     public Trainer deactivateTrainer(Trainer trainer) {
         authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
         trainer.deactivateAccount();
-        Trainer updatedTrainer = trainerDAO.update(trainer);
+        Trainer updatedTrainer = trainerDAO.updateTrainer(trainer);
         log.info("Deactivated account for trainer: {}", trainer);
         return updatedTrainer;
     }

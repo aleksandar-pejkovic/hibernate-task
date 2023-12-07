@@ -1,20 +1,5 @@
 package org.example.dao;
 
-import org.example.model.Trainer;
-import org.example.model.TrainingType;
-import org.example.model.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.util.Collections;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,6 +13,22 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.example.model.Trainee;
+import org.example.model.Trainer;
+import org.example.model.TrainingType;
+import org.example.model.User;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 class TrainerDAOTest {
 
     @Mock
@@ -39,13 +40,13 @@ class TrainerDAOTest {
     @InjectMocks
     private TrainerDAO trainerDAO;
 
-    private Trainer trainer;
+    private Trainer testTrainer;
 
     @BeforeEach
     void setUp() throws Exception {
         try (AutoCloseable autoCloseable = MockitoAnnotations.openMocks(this)) {
             when(sessionFactory.getCurrentSession()).thenReturn(session);
-            trainer = Trainer.builder()
+            testTrainer = Trainer.builder()
                     .specialization(TrainingType.builder()
                             .id(1L)
                             .trainingTypeName("Cardio")
@@ -64,31 +65,29 @@ class TrainerDAOTest {
     @Test
     void saveTrainer() {
         // Arrange
-        doNothing().when(session).persist(trainer);
+        doNothing().when(session).persist(testTrainer);
 
         // Act
-        Trainer savedTrainer = trainerDAO.save(trainer);
+        Trainer savedTrainer = trainerDAO.saveTrainer(testTrainer);
 
         // Assert
-        assertEquals(trainer.getUsername(), savedTrainer.getUsername());
-        assertEquals(trainer.getUser().getFirstName(), savedTrainer.getUser().getFirstName());
-        verify(session, times(1)).persist(trainer);
+        assertEquals(testTrainer.getUsername(), savedTrainer.getUsername());
+        assertEquals(testTrainer.getUser().getFirstName(), savedTrainer.getUser().getFirstName());
+        verify(session, times(1)).persist(testTrainer);
     }
 
     @Test
     void findTrainerByUsername() {
         // Arrange
-        Query<Trainer> query;
-        query = mock(Query.class);
+        Query<Trainer> query = mock(Query.class);
         when(session.createQuery(anyString(), eq(Trainer.class))).thenReturn(query);
-        when(query.setParameter(eq("username"), anyString())).thenReturn(query);
-        when(query.getSingleResult()).thenReturn(trainer);
+        when(query.getSingleResult()).thenReturn(testTrainer);
 
         // Act
         Trainer foundTrainer = trainerDAO.findByUsername("John.Smith");
 
         // Assert
-        assertEquals(trainer, foundTrainer);
+        assertEquals(testTrainer, foundTrainer);
         verify(session, times(1)).createQuery(anyString(), eq(Trainer.class));
         verify(query, times(1)).setParameter(eq("username"), anyString());
         verify(query, times(1)).getSingleResult();
@@ -97,14 +96,23 @@ class TrainerDAOTest {
     @Test
     void updateTrainer() {
         // Arrange
-        when(session.merge(trainer)).thenReturn(trainer);
+        Trainer trainerBeforeUpdate = testTrainer;
+        Trainer trainerAfterUpdate = Trainer.builder()
+                .specialization(TrainingType.builder()
+                        .id(2L)
+                        .trainingTypeName("Strength")
+                        .build())
+                .user(testTrainer.getUser())
+                .build();
+
+        when(session.merge(trainerBeforeUpdate)).thenReturn(trainerAfterUpdate);
 
         // Act
-        Trainer updatedTrainer = trainerDAO.update(trainer);
+        Trainer resultTrainer = trainerDAO.updateTrainer(trainerBeforeUpdate);
 
         // Assert
-        assertEquals(trainer, updatedTrainer);
-        verify(session, times(1)).merge(trainer);
+        assertEquals(trainerAfterUpdate, resultTrainer);
+        verify(session, times(1)).merge(trainerBeforeUpdate);
     }
 
     @Test
@@ -154,14 +162,14 @@ class TrainerDAOTest {
         query = mock(Query.class);
         when(session.createQuery(anyString(), eq(Trainer.class))).thenReturn(query);
         when(query.setParameter(eq("traineeUsername"), anyString())).thenReturn(query);
-        when(query.getResultList()).thenReturn(Collections.singletonList(trainer));
+        when(query.getResultList()).thenReturn(Collections.singletonList(testTrainer));
 
         // Act
         List<Trainer> trainers = trainerDAO.getNotAssigned("Trainee1");
 
         // Assert
         assertEquals(1, trainers.size());
-        assertEquals(trainer, trainers.get(0));
+        assertEquals(testTrainer, trainers.get(0));
         verify(session, times(1)).createQuery(anyString(), eq(Trainer.class));
         verify(query, times(1)).setParameter(eq("traineeUsername"), anyString());
         verify(query, times(1)).getResultList();
@@ -173,15 +181,15 @@ class TrainerDAOTest {
         Query<Trainer> query;
         query = mock(Query.class);
         when(session.createQuery(anyString(), eq(Trainer.class))).thenReturn(query);
-        when(query.list()).thenReturn(Collections.singletonList(trainer));
+        when(query.getResultList()).thenReturn(Collections.singletonList(testTrainer));
 
         // Act
         List<Trainer> trainers = trainerDAO.getAllTrainers();
 
         // Assert
         assertEquals(1, trainers.size());
-        assertEquals(trainer, trainers.get(0));
+        assertEquals(testTrainer, trainers.get(0));
         verify(session, times(1)).createQuery(anyString(), eq(Trainer.class));
-        verify(query, times(1)).list();
+        verify(query, times(1)).getResultList();
     }
 }

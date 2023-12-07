@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.example.model.Training;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,28 +19,28 @@ import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class TrainingDAO {
+public class TrainingDAO extends AbstractDAO {
 
-    private final SessionFactory sessionFactory;
+    public static final String ENTITY_ATTRIBUTE = "user";
+    public static final String USER_ATTRIBUTE = "username";
+    public static final String TRAINING_ATTRIBUTE_FOR_CRITERIA = "trainingDuration";
 
     @Autowired
     public TrainingDAO(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+        super(sessionFactory);
     }
 
-    public Training save(Training training) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(training);
-        log.info("Training saved successfully. ID: {}", training.getId());
-        return training;
+    public Training saveTraining(Training training) {
+        return (Training) save(training);
     }
 
     public Training findById(long id) {
-        Session session = sessionFactory.getCurrentSession();
-        Training training = session.get(Training.class, id);
+        Training training = (Training) findById(Training.class, id);
         if (Optional.ofNullable(training).isEmpty()) {
             log.error("Training not found by ID: {}", id);
+            return new Training();
         }
+        log.error("Training found by ID: {}", id);
         return training;
     }
 
@@ -53,9 +52,8 @@ public class TrainingDAO {
         return getTrainingList("trainer", username, trainingDuration);
     }
 
-    public Training update(Training training) {
-        Session session = sessionFactory.getCurrentSession();
-        Training updatedTraining = session.merge(training);
+    public Training updateTraining(Training training) {
+        Training updatedTraining = (Training) update(training);
         log.info("Training updated successfully. ID: {}", updatedTraining.getId());
         return updatedTraining;
     }
@@ -74,9 +72,7 @@ public class TrainingDAO {
     }
 
     public List<Training> getAllTrainings() {
-        Session session = sessionFactory.getCurrentSession();
-        Query<Training> query = session.createQuery("FROM Training", Training.class);
-        List<Training> trainingList = query.getResultList();
+        List<Training> trainingList = (List<Training>) findAll(Training.class);
         log.info("Retrieved all trainings. Count: {}", trainingList.size());
         return trainingList;
     }
@@ -87,8 +83,8 @@ public class TrainingDAO {
         CriteriaQuery<Training> criteriaQuery = criteriaBuilder.createQuery(Training.class);
         Root<Training> root = criteriaQuery.from(Training.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(criteriaBuilder.equal(root.get(entityType).get("user").get("username"), username));
-        predicates.add(criteriaBuilder.greaterThan(root.get("trainingDuration"), trainingDuration));
+        predicates.add(criteriaBuilder.equal(root.get(entityType).get(ENTITY_ATTRIBUTE).get(USER_ATTRIBUTE), username));
+        predicates.add(criteriaBuilder.greaterThan(root.get(TRAINING_ATTRIBUTE_FOR_CRITERIA), trainingDuration));
         criteriaQuery.select(root).where(predicates.toArray(new Predicate[]{}));
         return session.createQuery(criteriaQuery).getResultList();
     }
