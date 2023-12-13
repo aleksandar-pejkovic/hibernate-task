@@ -1,6 +1,7 @@
 package org.example.dao;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.example.model.Trainer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,24 +9,19 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class TrainerDAO {
-
-    private final SessionFactory sessionFactory;
+public class TrainerDAO extends AbstractDAO<Trainer> {
 
     @Autowired
     public TrainerDAO(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+        super(sessionFactory);
     }
 
-    public void save(Trainer trainer) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(trainer);
-        log.info("Trainer saved successfully. ID: {}", trainer.getId());
+    public Trainer saveTrainer(Trainer trainer) {
+        return save(trainer);
     }
 
     public Trainer findByUsername(String username) {
@@ -35,38 +31,36 @@ public class TrainerDAO {
         return query.getSingleResult();
     }
 
-    public Trainer update(Trainer trainer) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.merge(trainer);
+    public Trainer updateTrainer(Trainer trainer) {
+        return update(trainer);
     }
 
-    public boolean delete(String username) {
+    public boolean deleteTrainerByUsername(String username) {
         Session session = sessionFactory.getCurrentSession();
-        Query<Long> subQuery = session.createQuery("SELECT t.id FROM Trainer t WHERE t.user.username = :username",
+        Query<Long> query = session.createQuery("DELETE FROM Trainer t WHERE t.user.username = :username",
                 Long.class);
-        subQuery.setParameter("username", username);
+        query.setParameter("username", username);
 
-        Long trainerId = subQuery.uniqueResult();
+        int rowsDeleted = query.executeUpdate();
 
-        if (Optional.ofNullable(trainerId).isPresent()) {
-            Trainer trainer = session.get(Trainer.class, trainerId);
-            session.remove(trainer);
-            log.info("Trainer deleted successfully. USERNAME: {}", username);
-            return true;
-        } else {
+        if (rowsDeleted < 1) {
             log.error("Trainer not found for USERNAME: {}", username);
             return false;
+        } else {
+            log.info("Trainer deleted successfully. USERNAME: {}", username);
+            return true;
         }
     }
 
-    public List<Trainer> getNotAssigned(String traineeUsername) {
+    public List<Trainer> getNotAssignedTrainers(String traineeUsername) {
         Session session = sessionFactory.getCurrentSession();
 
-        String hql = "SELECT t FROM Trainer t WHERE t.id NOT IN " +
-                "(SELECT tr.id FROM Trainee te JOIN te.trainerList tr WHERE te.user.username = :username)";
+        String hql = "SELECT t FROM Trainer t "
+                + "LEFT JOIN t.traineeList te "
+                + "WHERE te IS NULL OR te.user.username = :traineeUsername";
 
         Query<Trainer> query = session.createQuery(hql, Trainer.class);
-        query.setParameter("username", traineeUsername);
+        query.setParameter("traineeUsername", traineeUsername);
 
         List<Trainer> trainerList = query.getResultList();
         log.info("Successfully retrieved unassigned trainers list: {}", trainerList);
@@ -74,10 +68,6 @@ public class TrainerDAO {
     }
 
     public List<Trainer> getAllTrainers() {
-        Session session = sessionFactory.getCurrentSession();
-        Query<Trainer> query = session.createQuery("FROM Trainer", Trainer.class);
-        List<Trainer> trainerList = query.list();
-        log.info("Retrieved all trainers. Count: {}", trainerList.size());
-        return trainerList;
+        return findAll(Trainer.class);
     }
 }

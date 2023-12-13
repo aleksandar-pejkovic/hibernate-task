@@ -36,9 +36,9 @@ public class GymFacade {
         List<Trainee> trainees = traineeService.getAllTrainees();
     }
 
-    public void createTrainee(Trainee trainee) {
+    public Trainee createTrainee(Trainee trainee) {
         log.info("Creating trainee...");
-        traineeService.createTrainee(trainee);
+        return traineeService.createTrainee(trainee);
     }
 
     public Trainee getTraineeByUsername(String username) {

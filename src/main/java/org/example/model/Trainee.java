@@ -1,5 +1,9 @@
 package org.example.model;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,16 +20,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
-public class Trainee {
+public class Trainee implements AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +58,10 @@ public class Trainee {
         return this.getUser().getPassword();
     }
 
+    public void setUsername(String username) {
+        this.getUser().setUsername(username);
+    }
+
     public void setPassword(String password) {
         this.getUser().setPassword(password);
     }
@@ -68,15 +72,5 @@ public class Trainee {
 
     public void deactivateAccount() {
         this.getUser().setActive(false);
-    }
-
-    public void addTrainer(Trainer trainer) {
-        trainer.getTraineeList().add(this);
-        this.getTrainerList().add(trainer);
-    }
-
-    public void removeTrainer(Trainer trainer) {
-        trainer.getTraineeList().remove(this);
-        this.getTrainerList().remove(trainer);
     }
 }

@@ -18,25 +18,21 @@ public class TrainingService {
 
     private final TrainingDAO trainingDAO;
 
-    private UserAuthentication authentication;
+    private final UserAuthentication authentication;
 
     @Autowired
-    public TrainingService(TrainingDAO trainingDAO) {
+    public TrainingService(TrainingDAO trainingDAO, UserAuthentication authentication) {
         this.trainingDAO = trainingDAO;
-    }
-
-    @Autowired
-    public void setAuthentication(UserAuthentication authentication) {
         this.authentication = authentication;
     }
 
     @Transactional
-    public void createTraining(Training training) {
+    public Training createTraining(Training training) {
         Trainee trainee = training.getTrainee();
         Trainer trainer = training.getTrainer();
-        trainee.addTrainer(trainer);
-        trainingDAO.save(training);
-        log.info("Training created: {}", training);
+        trainer.getTraineeList().add(trainee);
+        trainee.getTrainerList().add(trainer);
+        return trainingDAO.saveTraining(training);
     }
 
     @Transactional(readOnly = true)
@@ -48,7 +44,7 @@ public class TrainingService {
 
     @Transactional
     public Training updateTraining(Training training) {
-        Training updatedTraining = trainingDAO.update(training);
+        Training updatedTraining = trainingDAO.updateTraining(training);
         log.info("Training updated: {}", training);
         return updatedTraining;
     }
@@ -57,8 +53,9 @@ public class TrainingService {
     public boolean deleteTraining(Training training) {
         Trainee trainee = training.getTrainee();
         Trainer trainer = training.getTrainer();
-        trainee.removeTrainer(trainer);
-        boolean result = trainingDAO.delete(training);
+        trainer.getTraineeList().remove(trainee);
+        trainee.getTrainerList().remove(trainer);
+        boolean result = trainingDAO.deleteTraining(training);
         log.info("Training deleted with ID: {}", training.getId());
         return result;
     }

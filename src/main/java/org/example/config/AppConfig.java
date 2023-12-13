@@ -19,6 +19,16 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 
     @Bean
+    public CredentialsGenerator credentialsGenerator(SessionFactory sessionFactory) {
+        return new CredentialsGenerator(sessionFactory);
+    }
+
+    @Bean
+    public UserAuthentication userAuthentication(SessionFactory sessionFactory) {
+        return new UserAuthentication(sessionFactory);
+    }
+
+    @Bean
     public TraineeDAO traineeDAO(SessionFactory sessionFactory) {
         return new TraineeDAO(sessionFactory);
     }
@@ -34,28 +44,20 @@ public class AppConfig {
     }
 
     @Bean
-    public TraineeService traineeService(TraineeDAO traineeDAO) {
-        return new TraineeService(traineeDAO);
+    public TraineeService traineeService(TraineeDAO traineeDAO, CredentialsGenerator credentialsGenerator,
+                                         UserAuthentication authentication) {
+        return new TraineeService(traineeDAO, credentialsGenerator, authentication);
     }
 
     @Bean
-    public TrainerService trainerService(TrainerDAO trainerDAO) {
-        return new TrainerService(trainerDAO);
+    public TrainerService trainerService(TrainerDAO trainerDAO, CredentialsGenerator credentialsGenerator,
+                                         UserAuthentication authentication) {
+        return new TrainerService(trainerDAO, credentialsGenerator, authentication);
     }
 
     @Bean
-    public TrainingService trainingService(TrainingDAO trainingDAO) {
-        return new TrainingService(trainingDAO);
-    }
-
-    @Bean
-    public CredentialsGenerator credentialsGenerator(SessionFactory sessionFactory) {
-        return new CredentialsGenerator(sessionFactory);
-    }
-
-    @Bean
-    public UserAuthentication userAuthentication(SessionFactory sessionFactory) {
-        return new UserAuthentication(sessionFactory);
+    public TrainingService trainingService(TrainingDAO trainingDAO, UserAuthentication authentication) {
+        return new TrainingService(trainingDAO, authentication);
     }
 
     @Bean

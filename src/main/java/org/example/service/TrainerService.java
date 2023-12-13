@@ -1,6 +1,7 @@
 package org.example.service;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.example.dao.TrainerDAO;
 import org.example.model.Trainer;
 import org.example.utils.CredentialsGenerator;
@@ -9,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -17,33 +18,24 @@ public class TrainerService {
 
     private final TrainerDAO trainerDAO;
 
-    private CredentialsGenerator generator;
+    private final CredentialsGenerator generator;
 
-    private UserAuthentication authentication;
+    private final UserAuthentication authentication;
 
     @Autowired
-    public TrainerService(TrainerDAO trainerDAO) {
+    public TrainerService(TrainerDAO trainerDAO, CredentialsGenerator credentialsGenerator, UserAuthentication authentication) {
         this.trainerDAO = trainerDAO;
-    }
-
-    @Autowired
-    public void setGenerator(CredentialsGenerator credentialsGenerator) {
         this.generator = credentialsGenerator;
-    }
-
-    @Autowired
-    public void setAuthentication(UserAuthentication authentication) {
         this.authentication = authentication;
     }
 
     @Transactional
-    public void createTrainer(Trainer trainer) {
+    public Trainer createTrainer(Trainer trainer) {
         String username = generator.generateUsername(trainer.getUser());
         String password = generator.generateRandomPassword();
-        trainer.getUser().setUsername(username);
-        trainer.getUser().setPassword(password);
-        trainerDAO.save(trainer);
-        log.info("Trainer created: {}", trainer);
+        trainer.setUsername(username);
+        trainer.setPassword(password);
+        return trainerDAO.saveTrainer(trainer);
     }
 
     @Transactional(readOnly = true)
@@ -58,7 +50,7 @@ public class TrainerService {
         authentication.authenticateUser(username, oldPassword);
         Trainer trainer = getTrainerByUsername(username);
         trainer.setPassword(newPassword);
-        Trainer updatedTrainer = trainerDAO.update(trainer);
+        Trainer updatedTrainer = trainerDAO.updateTrainer(trainer);
         log.info("Password updated for trainer: {}", trainer);
         return updatedTrainer;
     }
@@ -66,7 +58,7 @@ public class TrainerService {
     @Transactional
     public void updateTrainer(Trainer trainer) {
         authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
-        trainerDAO.update(trainer);
+        trainerDAO.updateTrainer(trainer);
         log.info("Trainer updated: {}", trainer);
     }
 
@@ -74,7 +66,7 @@ public class TrainerService {
     public Trainer activateTrainer(Trainer trainer) {
         authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
         trainer.activateAccount();
-        Trainer updatedTrainer = trainerDAO.update(trainer);
+        Trainer updatedTrainer = trainerDAO.updateTrainer(trainer);
         log.info("Activated account for trainer: {}", trainer);
         return updatedTrainer;
     }
@@ -83,7 +75,7 @@ public class TrainerService {
     public Trainer deactivateTrainer(Trainer trainer) {
         authentication.authenticateUser(trainer.getUsername(), trainer.getPassword());
         trainer.deactivateAccount();
-        Trainer updatedTrainer = trainerDAO.update(trainer);
+        Trainer updatedTrainer = trainerDAO.updateTrainer(trainer);
         log.info("Deactivated account for trainer: {}", trainer);
         return updatedTrainer;
     }
@@ -92,14 +84,14 @@ public class TrainerService {
     public boolean deleteTrainer(String username, String password) {
         authentication.authenticateUser(username, password);
         log.info("Deleting trainer with USERNAME: {}", username);
-        return trainerDAO.delete(username);
+        return trainerDAO.deleteTrainerByUsername(username);
     }
 
     @Transactional(readOnly = true)
     public List<Trainer> getNotAssignedTrainerList(String traineeUsername, String password) {
         authentication.authenticateUser(traineeUsername, password);
         log.info("Retrieving trainer list for trainee with USERNAME: {}", traineeUsername);
-        return trainerDAO.getNotAssigned(traineeUsername);
+        return trainerDAO.getNotAssignedTrainers(traineeUsername);
     }
 
     @Transactional(readOnly = true)

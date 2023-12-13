@@ -1,5 +1,19 @@
 package org.example.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import org.example.dao.TrainingDAO;
 import org.example.model.Trainee;
 import org.example.model.Trainer;
@@ -11,21 +25,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.util.ReflectionTestUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 class TrainingServiceTest {
 
@@ -44,66 +43,60 @@ class TrainingServiceTest {
 
     private Trainer trainer;
 
-    private User user1;
-
-    private User user2;
-
     @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        trainingService = new TrainingService(trainingDAO);
-        ReflectionTestUtils.setField(trainingService, "authentication", userAuthentication);
+    void setUp() throws Exception {
+        try (AutoCloseable autoCloseable = MockitoAnnotations.openMocks(this)) {
+            User user1 = User.builder()
+                    .isActive(true)
+                    .lastName("Biaggi")
+                    .firstName("Max")
+                    .username("Max.Biaggi")
+                    .password("0123456789")
+                    .build();
 
-        user1 = User.builder()
-                .isActive(true)
-                .lastName("Biaggi")
-                .firstName("Max")
-                .username("Max.Biaggi")
-                .password("0123456789")
-                .build();
+            User user2 = User.builder()
+                    .isActive(true)
+                    .lastName("Storrari")
+                    .firstName("Matteo")
+                    .username("Matteo.Storrari")
+                    .password("0123456789")
+                    .build();
 
-        user2 = User.builder()
-                .isActive(true)
-                .lastName("Storrari")
-                .firstName("Matteo")
-                .username("Matteo.Storrari")
-                .password("0123456789")
-                .build();
+            trainee = Trainee.builder()
+                    .user(user1)
+                    .address("11000 Belgrade")
+                    .dateOfBirth(new Date())
+                    .trainerList(new ArrayList<>())
+                    .trainingList(new ArrayList<>())
+                    .build();
 
-        trainee = Trainee.builder()
-                .user(user1)
-                .address("11000 Belgrade")
-                .dateOfBirth(new Date())
-                .trainerList(new ArrayList<>())
-                .trainingList(new ArrayList<>())
-                .build();
+            trainer = Trainer.builder()
+                    .user(user2)
+                    .traineeList(new ArrayList<>())
+                    .trainingList(new ArrayList<>())
+                    .build();
 
-        trainer = Trainer.builder()
-                .user(user2)
-                .traineeList(new ArrayList<>())
-                .trainingList(new ArrayList<>())
-                .build();
+            training = new Training();
+            training.setId(1L);
+            training.setTrainee(trainee);
+            training.setTrainer(trainer);
 
-        training = new Training();
-        training.setId(1L);
-        training.setTrainee(trainee);
-        training.setTrainer(trainer);
-
-        doNothing().when(userAuthentication).authenticateUser(eq(trainee.getUsername()), eq(trainee.getPassword()));
+            doNothing().when(userAuthentication).authenticateUser(eq(trainee.getUsername()), eq(trainee.getPassword()));
+        }
     }
 
     @Test
     void createTraining() {
         // Arrange
-        doNothing().when(trainingDAO).save(any(Training.class));
+        when(trainingDAO.saveTraining(any())).thenReturn(training);
 
         // Act
-        trainingService.createTraining(training);
+        Training result = trainingService.createTraining(training);
 
         // Assert
-        verify(trainingDAO, times(1)).save(training);
-        assertEquals(trainee, training.getTrainee());
-        assertEquals(trainer, training.getTrainer());
+        verify(trainingDAO, times(1)).saveTraining(training);
+        assertEquals(trainee, result.getTrainee());
+        assertEquals(trainer, result.getTrainer());
     }
 
     @Test
@@ -122,26 +115,26 @@ class TrainingServiceTest {
     @Test
     void updateTraining() {
         // Arrange
-        when(trainingDAO.update(training)).thenReturn(training);
+        when(trainingDAO.updateTraining(training)).thenReturn(training);
 
         // Act
         Training result = trainingService.updateTraining(training);
 
         // Assert
-        verify(trainingDAO, times(1)).update(training);
+        verify(trainingDAO, times(1)).updateTraining(training);
         assertEquals(training, result);
     }
 
     @Test
     void deleteTraining() {
         // Arrange
-        when(trainingDAO.delete(training)).thenReturn(true);
+        when(trainingDAO.deleteTraining(training)).thenReturn(true);
 
         // Act
         boolean result = trainingService.deleteTraining(training);
 
         // Assert
-        verify(trainingDAO, times(1)).delete(training);
+        verify(trainingDAO, times(1)).deleteTraining(training);
         assertTrue(result);
     }
 
