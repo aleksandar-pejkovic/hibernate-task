@@ -3,12 +3,10 @@ package org.example.dao;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -16,7 +14,6 @@ import static org.mockito.Mockito.when;
 import java.util.Collections;
 import java.util.List;
 
-import org.example.model.Trainee;
 import org.example.model.Trainer;
 import org.example.model.TrainingType;
 import org.example.model.User;
@@ -118,54 +115,49 @@ class TrainerDAOTest {
     @Test
     void deleteTrainer() {
         // Arrange
-        Query<Long> subQuery;
-        subQuery = mock(Query.class);
-        when(session.createQuery(anyString(), eq(Long.class))).thenReturn(subQuery);
-        when(subQuery.setParameter(eq("username"), anyString())).thenReturn(subQuery);
-        when(subQuery.uniqueResult()).thenReturn(1L);
+        Query<Long> query = mock(Query.class);
+        when(session.createQuery(anyString(), eq(Long.class))).thenReturn(query);
+        when(query.setParameter(eq("username"), anyString())).thenReturn(query);
+        when(query.executeUpdate()).thenReturn(1);
 
         // Act
-        boolean result = trainerDAO.delete("John.Smith");
+        boolean result = trainerDAO.deleteTrainerByUsername("John.Smith");
 
         // Assert
         assertTrue(result);
         verify(session, times(1)).createQuery(anyString(), eq(Long.class));
-        verify(subQuery, times(1)).setParameter(eq("username"), anyString());
-        verify(subQuery, times(1)).uniqueResult();
-        verify(session, times(1)).remove(any());
+        verify(query, times(1)).setParameter(eq("username"), anyString());
+        verify(query, times(1)).executeUpdate();
     }
 
     @Test
     void deleteTrainer_NotFound() {
         // Arrange
-        Query<Long> subQuery;
-        subQuery = mock(Query.class);
-        when(session.createQuery(anyString(), eq(Long.class))).thenReturn(subQuery);
-        when(subQuery.setParameter(eq("username"), anyString())).thenReturn(subQuery);
-        when(subQuery.uniqueResult()).thenReturn(null);
+        Query<Long> query = mock(Query.class);
+        when(session.createQuery(anyString(), eq(Long.class))).thenReturn(query);
+        when(query.setParameter(eq("username"), anyString())).thenReturn(query);
+        when(query.executeUpdate()).thenReturn(0);
 
         // Act
-        boolean result = trainerDAO.delete("NonExistentUser");
+        boolean result = trainerDAO.deleteTrainerByUsername("NonExistentUser");
 
         // Assert
         assertFalse(result);
         verify(session, times(1)).createQuery(anyString(), eq(Long.class));
-        verify(subQuery, times(1)).setParameter(eq("username"), anyString());
-        verify(subQuery, times(1)).uniqueResult();
-        verify(session, never()).remove(any());
+        verify(query, times(1)).setParameter(eq("username"), anyString());
+        verify(query, times(1)).executeUpdate();
     }
 
     @Test
     void getNotAssignedTrainers() {
         // Arrange
-        Query<Trainer> query;
-        query = mock(Query.class);
+        Query<Trainer> query = mock(Query.class);
         when(session.createQuery(anyString(), eq(Trainer.class))).thenReturn(query);
         when(query.setParameter(eq("traineeUsername"), anyString())).thenReturn(query);
         when(query.getResultList()).thenReturn(Collections.singletonList(testTrainer));
 
         // Act
-        List<Trainer> trainers = trainerDAO.getNotAssigned("Trainee1");
+        List<Trainer> trainers = trainerDAO.getNotAssignedTrainers("Trainee1");
 
         // Assert
         assertEquals(1, trainers.size());
@@ -178,8 +170,7 @@ class TrainerDAOTest {
     @Test
     void getAllTrainers() {
         // Arrange
-        Query<Trainer> query;
-        query = mock(Query.class);
+        Query<Trainer> query = mock(Query.class);
         when(session.createQuery(anyString(), eq(Trainer.class))).thenReturn(query);
         when(query.getResultList()).thenReturn(Collections.singletonList(testTrainer));
 

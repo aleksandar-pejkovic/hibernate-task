@@ -154,14 +154,14 @@ class TrainerServiceTest {
         // Arrange
         String username = "testUser";
         String password = "testPassword";
-        when(trainerDAO.delete(username)).thenReturn(true);
+        when(trainerDAO.deleteTrainerByUsername(username)).thenReturn(true);
 
         // Act
         boolean result = trainerService.deleteTrainer(username, password);
 
         // Assert
         verify(userAuthentication, times(1)).authenticateUser(username, password);
-        verify(trainerDAO, times(1)).delete(username);
+        verify(trainerDAO, times(1)).deleteTrainerByUsername(username);
         assertTrue(result);
     }
 
@@ -171,14 +171,14 @@ class TrainerServiceTest {
         String traineeUsername = "traineeUser";
         String password = "testPassword";
         List<Trainer> expectedTrainers = Collections.singletonList(new Trainer());
-        when(trainerDAO.getNotAssigned(traineeUsername)).thenReturn(expectedTrainers);
+        when(trainerDAO.getNotAssignedTrainers(traineeUsername)).thenReturn(expectedTrainers);
 
         // Act
         List<Trainer> result = trainerService.getNotAssignedTrainerList(traineeUsername, password);
 
         // Assert
         verify(userAuthentication, times(1)).authenticateUser(traineeUsername, password);
-        verify(trainerDAO, times(1)).getNotAssigned(traineeUsername);
+        verify(trainerDAO, times(1)).getNotAssignedTrainers(traineeUsername);
         assertEquals(expectedTrainers, result);
     }
 

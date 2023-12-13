@@ -112,48 +112,43 @@ class TraineeDAOTest {
     @Test
     void deleteTrainee() {
         // Arrange
-        Query<Long> query;
-        query = mock(Query.class);
+        Query<Long> query = mock(Query.class);
         when(session.createQuery(anyString(), eq(Long.class))).thenReturn(query);
         when(query.setParameter(eq("username"), anyString())).thenReturn(query);
-        when(query.uniqueResult()).thenReturn(1L);
+        when(query.executeUpdate()).thenReturn(1);
 
         // Act
-        boolean result = traineeDAO.deleteByUsername("Max.Biaggi");
+        boolean result = traineeDAO.deleteTraineeByUsername("Max.Biaggi");
 
         // Assert
         assertTrue(result);
         verify(session, times(1)).createQuery(anyString(), eq(Long.class));
         verify(query, times(1)).setParameter(eq("username"), anyString());
-        verify(query, times(1)).uniqueResult();
-        verify(session, times(1)).remove(any());
+        verify(query, times(1)).executeUpdate();
     }
 
     @Test
     void deleteTrainee_NotFound() {
         // Arrange
-        Query<Long> query;
-        query = mock(Query.class);
+        Query<Long> query = mock(Query.class);
         when(session.createQuery(anyString(), eq(Long.class))).thenReturn(query);
         when(query.setParameter(eq("username"), anyString())).thenReturn(query);
-        when(query.uniqueResult()).thenReturn(null);
+        when(query.executeUpdate()).thenReturn(0);
 
         // Act
-        boolean result = traineeDAO.deleteByUsername("NonExistentUser");
+        boolean result = traineeDAO.deleteTraineeByUsername("NonExistentUser");
 
         // Assert
         assertFalse(result);
         verify(session, times(1)).createQuery(anyString(), eq(Long.class));
         verify(query, times(1)).setParameter(eq("username"), anyString());
-        verify(query, times(1)).uniqueResult();
-        verify(session, never()).remove(any());
+        verify(query, times(1)).executeUpdate();
     }
 
     @Test
     void getAllTrainees() {
         // Arrange
-        Query<Trainee> query;
-        query = mock(Query.class);
+        Query<Trainee> query = mock(Query.class);
         when(session.createQuery(anyString(), eq(Trainee.class))).thenReturn(query);
         when(query.getResultList()).thenReturn(Collections.singletonList(testTrainee));
 

@@ -84,7 +84,7 @@ public class TraineeService {
     @Transactional
     public boolean deleteTrainee(String username, String password) {
         authentication.authenticateUser(username, password);
-        return traineeDAO.deleteByUsername(username);
+        return traineeDAO.deleteTraineeByUsername(username);
     }
 
     @Transactional(readOnly = true)

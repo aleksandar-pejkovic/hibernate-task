@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class TrainingDAO extends AbstractDAO {
+public class TrainingDAO extends AbstractDAO<Training> {
 
     public static final String ENTITY_ATTRIBUTE = "user";
     public static final String USER_ATTRIBUTE = "username";
@@ -31,11 +31,11 @@ public class TrainingDAO extends AbstractDAO {
     }
 
     public Training saveTraining(Training training) {
-        return (Training) save(training);
+        return save(training);
     }
 
     public Training findById(long id) {
-        Training training = (Training) findById(Training.class, id);
+        Training training = findById(Training.class, id);
         if (Optional.ofNullable(training).isEmpty()) {
             log.error("Training not found by ID: {}", id);
             return new Training();
@@ -53,12 +53,12 @@ public class TrainingDAO extends AbstractDAO {
     }
 
     public Training updateTraining(Training training) {
-        Training updatedTraining = (Training) update(training);
+        Training updatedTraining = update(training);
         log.info("Training updated successfully. ID: {}", updatedTraining.getId());
         return updatedTraining;
     }
 
-    public boolean delete(Training training) {
+    public boolean deleteTraining(Training training) {
         Session session = sessionFactory.getCurrentSession();
         try {
             session.merge(training);
@@ -72,7 +72,7 @@ public class TrainingDAO extends AbstractDAO {
     }
 
     public List<Training> getAllTrainings() {
-        List<Training> trainingList = (List<Training>) findAll(Training.class);
+        List<Training> trainingList = findAll(Training.class);
         log.info("Retrieved all trainings. Count: {}", trainingList.size());
         return trainingList;
     }

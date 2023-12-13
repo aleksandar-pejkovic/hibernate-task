@@ -128,13 +128,13 @@ class TrainingServiceTest {
     @Test
     void deleteTraining() {
         // Arrange
-        when(trainingDAO.delete(training)).thenReturn(true);
+        when(trainingDAO.deleteTraining(training)).thenReturn(true);
 
         // Act
         boolean result = trainingService.deleteTraining(training);
 
         // Assert
-        verify(trainingDAO, times(1)).delete(training);
+        verify(trainingDAO, times(1)).deleteTraining(training);
         assertTrue(result);
     }
 

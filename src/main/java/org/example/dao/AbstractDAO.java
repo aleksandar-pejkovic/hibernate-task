@@ -20,23 +20,23 @@ public abstract class AbstractDAO<T extends AbstractEntity> {
         this.sessionFactory = sessionFactory;
     }
 
-    protected AbstractEntity save(AbstractEntity entity) {
+    protected T save(T entity) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(entity);
         return entity;
     }
 
-    protected AbstractEntity findById(Class<?> entityClass, long id) {
+    protected T findById(Class<T> entityClass, long id) {
         Session session = sessionFactory.getCurrentSession();
-        return (AbstractEntity) session.get(entityClass, id);
+        return session.get(entityClass, id);
     }
 
-    protected AbstractEntity update(AbstractEntity entity) {
+    protected T update(T entity) {
         Session session = sessionFactory.getCurrentSession();
         return session.merge(entity);
     }
 
-    protected boolean delete(AbstractEntity entity) {
+    protected boolean delete(T entity) {
         Session session = sessionFactory.getCurrentSession();
         try {
             session.remove(entity);

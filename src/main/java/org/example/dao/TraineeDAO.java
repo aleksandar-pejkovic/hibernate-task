@@ -1,7 +1,6 @@
 package org.example.dao;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.example.model.Trainee;
 import org.hibernate.Session;
@@ -14,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class TraineeDAO extends AbstractDAO {
+public class TraineeDAO extends AbstractDAO<Trainee> {
 
     @Autowired
     public TraineeDAO(SessionFactory sessionFactory) {
@@ -22,7 +21,7 @@ public class TraineeDAO extends AbstractDAO {
     }
 
     public Trainee saveTrainee(Trainee trainee) {
-        return (Trainee) save(trainee);
+        return save(trainee);
     }
 
     public Trainee findByUsername(String username) {
@@ -33,29 +32,27 @@ public class TraineeDAO extends AbstractDAO {
     }
 
     public Trainee updateTrainee(Trainee trainee) {
-        return (Trainee) update(trainee);
+        return update(trainee);
     }
 
-    public boolean deleteByUsername(String username) {
+    public boolean deleteTraineeByUsername(String username) {
         Session session = sessionFactory.getCurrentSession();
-        Query<Long> subQuery = session.createQuery("DELETE FROM Trainee t WHERE t.user.username = :username",
+        Query<Long> query = session.createQuery("DELETE FROM Trainee t WHERE t.user.username = :username",
                 Long.class);
-        subQuery.setParameter("username", username);
+        query.setParameter("username", username);
 
-        Long traineeId = subQuery.uniqueResult();
+        int rowsDeleted = query.executeUpdate();
 
-        if (Optional.ofNullable(traineeId).isPresent()) {
-            Trainee trainee = session.get(Trainee.class, traineeId);
-            session.remove(trainee);
-            log.info("Trainee deleted successfully. USERNAME: {}", username);
-            return true;
-        } else {
+        if (rowsDeleted < 1) {
             log.error("Trainee not found for USERNAME: {}", username);
             return false;
+        } else {
+            log.info("Trainee deleted successfully. USERNAME: {}", username);
+            return true;
         }
     }
 
     public List<Trainee> getAllTrainees() {
-        return (List<Trainee>) findAll(Trainee.class);
+        return findAll(Trainee.class);
     }
 }

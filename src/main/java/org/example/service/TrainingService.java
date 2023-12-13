@@ -55,7 +55,7 @@ public class TrainingService {
         Trainer trainer = training.getTrainer();
         trainer.getTraineeList().remove(trainee);
         trainee.getTrainerList().remove(trainer);
-        boolean result = trainingDAO.delete(training);
+        boolean result = trainingDAO.deleteTraining(training);
         log.info("Training deleted with ID: {}", training.getId());
         return result;
     }

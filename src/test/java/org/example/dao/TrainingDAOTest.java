@@ -191,7 +191,7 @@ class TrainingDAOTest {
         doNothing().when(session).remove(any());
 
         // Act
-        boolean result = trainingDAO.delete(training);
+        boolean result = trainingDAO.deleteTraining(training);
 
         // Assert
         assertTrue(result);
@@ -206,7 +206,7 @@ class TrainingDAOTest {
         doThrow(new EntityNotFoundException("Entity not found")).when(session).remove(any());
 
         // Act
-        boolean result = trainingDAO.delete(training);
+        boolean result = trainingDAO.deleteTraining(training);
 
         // Assert
         assertFalse(result);
@@ -217,8 +217,7 @@ class TrainingDAOTest {
     @Test
     void getAllTrainings() {
         // Arrange
-        Query<Training> query;
-        query = mock(Query.class);
+        Query<Training> query = mock(Query.class);
         when(session.createQuery(anyString(), eq(Training.class))).thenReturn(query);
         when(query.getResultList()).thenReturn(Collections.singletonList(training));
 

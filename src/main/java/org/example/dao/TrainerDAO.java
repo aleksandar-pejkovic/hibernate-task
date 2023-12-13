@@ -1,7 +1,6 @@
 package org.example.dao;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.example.model.Trainer;
 import org.hibernate.Session;
@@ -14,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class TrainerDAO extends AbstractDAO {
+public class TrainerDAO extends AbstractDAO<Trainer> {
 
     @Autowired
     public TrainerDAO(SessionFactory sessionFactory) {
@@ -22,7 +21,7 @@ public class TrainerDAO extends AbstractDAO {
     }
 
     public Trainer saveTrainer(Trainer trainer) {
-        return (Trainer) save(trainer);
+        return save(trainer);
     }
 
     public Trainer findByUsername(String username) {
@@ -33,29 +32,27 @@ public class TrainerDAO extends AbstractDAO {
     }
 
     public Trainer updateTrainer(Trainer trainer) {
-        return (Trainer) update(trainer);
+        return update(trainer);
     }
 
-    public boolean delete(String username) {
+    public boolean deleteTrainerByUsername(String username) {
         Session session = sessionFactory.getCurrentSession();
-        Query<Long> subQuery = session.createQuery("DELETE FROM Trainer t WHERE t.user.username = :username",
+        Query<Long> query = session.createQuery("DELETE FROM Trainer t WHERE t.user.username = :username",
                 Long.class);
-        subQuery.setParameter("username", username);
+        query.setParameter("username", username);
 
-        Long trainerId = subQuery.uniqueResult();
+        int rowsDeleted = query.executeUpdate();
 
-        if (Optional.ofNullable(trainerId).isPresent()) {
-            Trainer trainer = session.get(Trainer.class, trainerId);
-            session.remove(trainer);
-            log.info("Trainer deleted successfully. USERNAME: {}", username);
-            return true;
-        } else {
+        if (rowsDeleted < 1) {
             log.error("Trainer not found for USERNAME: {}", username);
             return false;
+        } else {
+            log.info("Trainer deleted successfully. USERNAME: {}", username);
+            return true;
         }
     }
 
-    public List<Trainer> getNotAssigned(String traineeUsername) {
+    public List<Trainer> getNotAssignedTrainers(String traineeUsername) {
         Session session = sessionFactory.getCurrentSession();
 
         String hql = "SELECT t FROM Trainer t "
@@ -71,6 +68,6 @@ public class TrainerDAO extends AbstractDAO {
     }
 
     public List<Trainer> getAllTrainers() {
-        return (List<Trainer>) findAll(Trainer.class);
+        return findAll(Trainer.class);
     }
 }

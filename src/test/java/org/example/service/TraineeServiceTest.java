@@ -156,14 +156,14 @@ class TraineeServiceTest {
         // Arrange
         String username = "testUser";
         String password = "testPassword";
-        when(traineeDAO.deleteByUsername(username)).thenReturn(true);
+        when(traineeDAO.deleteTraineeByUsername(username)).thenReturn(true);
 
         // Act
         boolean result = traineeService.deleteTrainee(username, password);
 
         // Assert
         verify(userAuthentication, times(1)).authenticateUser(username, password);
-        verify(traineeDAO, times(1)).deleteByUsername(username);
+        verify(traineeDAO, times(1)).deleteTraineeByUsername(username);
         assertTrue(result);
     }
 
